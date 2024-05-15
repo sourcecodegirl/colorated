@@ -2,6 +2,7 @@ const button = document.getElementById('generate-colors');
 const colorContainer = document.getElementById('color-container');
 
 let disabledTimestamp = null;
+let previousColors = [];
 
 // Function to generate a random value returning a hex format and name value
 const generateRandomColor = () => {
@@ -27,6 +28,8 @@ const generateColors = async (numColors) => {
     }
 
     const colors = await Promise.all(colorPromises);
+    previousColors = colors; // Save generated colors
+    localStorage.setItem('previousColors', JSON.stringify(previousColors)); // Store generated colors to localStorage
     displayColors(colors);
 };
 
@@ -122,27 +125,49 @@ const scrollUpDown = (position = 300, delayUp = 500, delayDown = 800) => {
     }, delayUp);
 };
 
-// EventListener to show color container when JavaScript is enabled (This is necessary as the template is not displayed initially to prevent the template and the noscript block to both be displayed when JavaScript is disabled)
-window.addEventListener('DOMContentLoaded', function () {
-    colorContainer.style.display = 'flex';
-});
+// Function to check colors were saved and countdown active for disabled button (requires disableButtonTimed, displayColors, generateColors)
+const checkPrevColorsAndTime = async () => {
+    const savedColors = localStorage.getItem('previousColors');
+    const savedTimestamp = localStorage.getItem('disabledTimestamp');
+    
+    if (savedColors && savedTimestamp) {
+        previousColors = JSON.parse(savedColors);
+        disabledTimestamp = parseInt(savedTimestamp);
 
-// EventListener to generate colors on load and enable the button
+        const elapsedTime = Math.floor((Date.now() - disabledTimestamp) / 1000);
+        
+        if (elapsedTime < 30) {
+            const remainingSeconds = 30 - elapsedTime;
+            disableButtonTimed(remainingSeconds);
+            displayColors(previousColors);
+        } else {
+            button.disabled = false;
+        }
+    } else {
+        await generateColors(5);
+    }
+};
+
+// EventListener to generate colors on load and enable the button (requires checkPrevColorsAndTime)
 window.addEventListener('load', async () => {
     // Enables the button (This is necessary as the button is disabled initially to prevent the default active button and the noscript disabled button to both be displayed when JavaScript is disabled)
     button.style.display = 'inline-block';
-    button.disabled = false;
-    await generateColors(5);
     scrollUpDown(300, 500, 800);
+    await checkPrevColorsAndTime();
+});
+
+// EventListener to show color container when JavaScript is enabled (This is necessary as the template is not displayed initially to prevent the template and the noscript block to both be displayed when JavaScript is disabled)
+window.addEventListener('DOMContentLoaded', () => {
+    colorContainer.style.display = 'flex';
 });
 
 // EventListener for button click to fetch new colors
-button.addEventListener('click', async function(event) {
+button.addEventListener('click', async (event) => {
     event.preventDefault();
     await generateColors(5);
     scrollUpDown(300, 500, 800);
     disableButtonTimed();
-})
+});
 
 // Function to disable the button until the countdown is complete (requires startCountdown)
 const disableButtonTimed = (secondsLeft = 30) => {
