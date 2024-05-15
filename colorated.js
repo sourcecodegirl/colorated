@@ -1,6 +1,8 @@
 const button = document.getElementById('generate-colors');
 const colorContainer = document.getElementById('color-container');
 
+let disabledTimestamp = null;
+
 // Function to generate a random value returning a hex format and name value
 const generateRandomColor = () => {
     const randomColor = Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
@@ -120,7 +122,7 @@ const scrollUpDown = (position = 300, delayUp = 500, delayDown = 800) => {
     }, delayUp);
 };
 
-// EventListener to show color container when JavaScript is enabled (This is necessary as the template is hidden initially to prevent the template and the noscript block to both be displayed when JavaScript is disabled)
+// EventListener to show color container when JavaScript is enabled (This is necessary as the template is not displayed initially to prevent the template and the noscript block to both be displayed when JavaScript is disabled)
 window.addEventListener('DOMContentLoaded', function () {
     colorContainer.style.display = 'flex';
 });
@@ -139,8 +141,43 @@ button.addEventListener('click', async function(event) {
     event.preventDefault();
     await generateColors(5);
     scrollUpDown(300, 500, 800);
+    disableButtonTimed();
 })
 
-// Disable button to fetch new colors for a set time to prevent frequent calls to the API or store additional colors in an array when initially making a call to the API for the 5 that are displayed and then display those when a user clicks to fetch new colors to simulate a delay?
+// Function to disable the button until the countdown is complete (requires startCountdown)
+const disableButtonTimed = (secondsLeft = 30) => {
+    button.disabled = true;
+    button.textContent = 'autorenew';
+    button.title = `Respectfully wait ${secondsLeft} seconds before fetching new colors`;
 
-// Check previous colors stored?
+    startCountdown(secondsLeft);
+
+    disabledTimestamp = Date.now() - (30 - secondsLeft) * 1000;
+    localStorage.setItem('disabledTimestamp', disabledTimestamp);
+};
+
+// Function to start the countdown timer for disabling the button to fetch new colors (requires newButton)
+const startCountdown = (secondsLeft) => {
+    const countdownInterval = setInterval(() => {
+        secondsLeft--;
+        if (secondsLeft > 0) {
+            button.title = `Respectfully wait ${secondsLeft} seconds before fetching new colors`;
+        } else {
+            clearInterval(countdownInterval);
+            enableButton();
+        }
+    }, 1000);
+};
+
+// Function to enable the button to allow fetching of new colors
+const enableButton = () => {
+    button.disabled = false;
+    button.textContent = 'autorenew';
+    button.title = 'Push to fetch colors';
+};
+
+// Alternative to disabling the button for a set time, maybe store additional colors in an array during initial call to the API and then display those in groups of 5 when a user clicks to fetch new colors to simulate a delay so the user isn't aware of the delay
+
+// Check previous colors stored in localstorage and display those when refreshing page instead of displaying the colors from the placeholder template?
+
+// Add user input to search for a color
