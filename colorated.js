@@ -147,7 +147,7 @@ button.addEventListener('click', async function(event) {
 // Function to disable the button until the countdown is complete (requires startCountdown)
 const disableButtonTimed = (secondsLeft = 30) => {
     button.disabled = true;
-    button.textContent = 'autorenew';
+    button.textContent = 'refresh';
     button.title = `Respectfully wait ${secondsLeft} seconds before fetching new colors`;
 
     startCountdown(secondsLeft);
@@ -172,7 +172,7 @@ const startCountdown = (secondsLeft) => {
 // Function to enable the button to allow fetching of new colors
 const enableButton = () => {
     button.disabled = false;
-    button.textContent = 'autorenew';
+    button.textContent = 'refresh';
     button.title = 'Push to fetch colors';
 };
 
