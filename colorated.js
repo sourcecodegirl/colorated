@@ -48,7 +48,8 @@ const getColorInfo = async (hexColor) => {
     try {
         const response = await fetch(url);
         if (!response.ok) {
-            throw new Error(`Network response was bad`);
+            console.error(`Network response was bad for color: ${hexColor}`);
+            return;
         }
         const data = await response.json();
         return {
@@ -100,13 +101,14 @@ const getTextColor = (hexColor) => {
     return brightness > 125 ? '#222' : '#eee';
 };
 
-// EventListener to show color container when JavaScript is enabled
+// EventListener to show color container when JavaScript is enabled (This is necessary as the template is hidden initially to prevent the template and the noscript block to both be displayed when JavaScript is disabled)
 window.addEventListener('DOMContentLoaded', function () {
     colorContainer.style.display = 'flex';
 });
 
-// EventListener to generate colors on load
+// EventListener to generate colors on load and enable the button
 window.addEventListener('load', async () => {
+    // Enables the button (This is necessary as the button is disabled initially to prevent the default active button and the noscript disabled button to both be displayed when JavaScript is disabled)
     button.style.display = 'inline-block';
     button.disabled = false;
     await generateColors(5);

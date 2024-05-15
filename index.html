@@ -13,13 +13,13 @@
     <body>
         <header>
             <h1>Colorated</h1>
-            <noscript>
+            <noscript> <!-- Message when JavaScript is disabled -->
                 <div class="disabled-message">
                     <p>This website requires JavaScript to function. Please enable JavaScript.</p>
                 </div>
             </noscript>
             <nav>
-                <button class="refresh-colors material-symbols-outlined" id="generate-colors" title="Fetch new colors" style="display: none;">autorenew</button>
+                <button class="refresh-colors material-symbols-outlined" id="generate-colors" title="Fetch new colors" style="display: none;">autorenew</button> <!-- Initially not displayed to prevent button from also being displayed when JavaScript is disabled -->
                 <noscript> <!-- Display disabled button when JavaScript is disabled -->
                     <button class="refresh-colors material-symbols-outlined" id="generate-colors" title="Fetch new colors" disabled>autorenew</button>
                 </noscript>
@@ -78,7 +78,7 @@
                     </div>
                 </div>
             </div>
-            <noscript> <!-- Placeholder when JavaScript is disabled, display static colors and message -->
+            <noscript> <!-- Placeholder when JavaScript is disabled, display placeholder data -->
                 <div id="color-container">
                     <div class="color-slot" style="background-color: #c8b5e5;">
                         <div class="color-info">
