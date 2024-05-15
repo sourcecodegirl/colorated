@@ -1,1 +1,2 @@
-# colorated
+# Colorated
+### Yet another color generator

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Colorated</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="styles.css">
+        <script src="colorated.js" defer></script>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@32,700,0,0" />
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Amita:wght@400;700&family=Angkor&family=Domine:wght@400;500;600;700&family=Overlock:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Paytone+One&display=swap" rel="stylesheet">
+    </head>
+    <body>
+        <header>
+            <h1>Colorated</h1>
+            <noscript>
+                <div class="disabled-message">
+                    <p>This website requires JavaScript to function. Please enable JavaScript.</p>
+                </div>
+            </noscript>
+            <nav>
+                <button class="refresh-colors material-symbols-outlined" id="generate-colors" title="Fetch new colors" style="display: none;">autorenew</button>
+                <noscript> <!-- Display disabled button when JavaScript is disabled -->
+                    <button class="refresh-colors material-symbols-outlined" id="generate-colors" title="Fetch new colors" disabled>autorenew</button>
+                </noscript>
+            </nav>
+        </header>
+        <main>
+            <div id="color-container"> <!-- Template for 5 color slots with placeholder data -->
+                <div class="color-slot" style="background-color: #c8b5e5;">
+                    <div class="color-info">
+                        <p class="bold big dark">PRELUDE</p>
+                        <hr>
+                        <p class="dark"><span class="bold">HEX</span> #c8b5e5</p>
+                        <p class="dark"><span class="bold">RGB:</span> rgb(200, 181, 229)</p>
+                        <p class="dark"><span class="bold">HSL:</span> hsl(264, 48%, 80%)</p>
+                        <p class="dark"><span class="bold">CMYK:</span> cmyk(13, 21, 0, 10)</p>
+                    </div>
+                </div>
+                <div class="color-slot" style="background-color: #a9a564;">
+                    <div class="color-info">
+                        <p class="bold big light">GREEN SMOKE</p>
+                        <hr>
+                        <p class="light"><span class="bold">HEX:</span> #a9a564</p>
+                        <p class="light"><span class="bold">RGB:</span> rgb(169, 165, 100)</p>
+                        <p class="light"><span class="bold">HSL:</span> hsl(57, 29%, 53%)</p>
+                        <p class="light"><span class="bold">CMYK:</span> cmyk(0, 2, 41, 34)</p>
+                    </div>
+                </div>
+                <div class="color-slot" style="background-color: #bc9593;">
+                    <div class="color-info">
+                        <p class="bold big light">QUICKSAND</p>
+                        <hr>
+                        <p class="light"><span class="bold">HEX:</span> #bc9593</p>
+                        <p class="light"><span class="bold">RGB:</span> rgb(188, 149, 147)</p>
+                        <p class="light"><span class="bold">HSL:</span> hsl(3, 23%, 66%)</p>
+                        <p class="light"><span class="bold">CMYK:</span> cmyk(0, 21, 22, 26)</p>
+                    </div>
+                </div>
+                <div class="color-slot" style="background-color: #efe287;">
+                    <div class="color-info">
+                        <p class="bold big dark">KHAKI</p>
+                        <hr>
+                        <p class="dark"><span class="bold">HEX:</span> #efe287</p>
+                        <p class="dark"><span class="bold">RGB:</span> rgb(239, 226, 135)</p>
+                        <p class="dark"><span class="bold">HSL:</span> hsl(52, 76%, 73%)</p>
+                        <p class="dark"><span class="bold">CMYK:</span> cmyk(0, 5, 44, 6)</p>
+                    </div>
+                </div>
+                <div class="color-slot" style="background-color: #2bdf9d;">
+                    <div class="color-info">
+                        <p class="bold big dark">CARIBBEAN GREEN</p>
+                        <hr>
+                        <p class="dark"><span class="bold">HEX:</span> #2bdf9d</p>
+                        <p class="dark"><span class="bold">RGB:</span> rgb(43, 223, 157)</p>
+                        <p class="dark"><span class="bold">HSL:</span> hsl(158, 74%, 52%)</p>
+                        <p class="dark"><span class="bold">CMYK:</span> cmyk(81, 0, 30, 13)</p>
+                    </div>
+                </div>
+            </div>
+            <noscript> <!-- Placeholder when JavaScript is disabled, display static colors and message -->
+                <div id="color-container">
+                    <div class="color-slot" style="background-color: #c8b5e5;">
+                        <div class="color-info">
+                            <p class="bold big dark">PRELUDE</p>
+                            <hr>
+                            <p class="dark"><span class="bold">HEX:</span> #c8b5e5</p>
+                            <p class="dark"><span class="bold">RGB:</span> rgb(200, 181, 229)</p>
+                            <p class="dark"><span class="bold">HSL:</span> hsl(264, 48%, 80%)</p>
+                            <p class="dark"><span class="bold">CMYK:</span> cmyk(13, 21, 0, 10)</p>
+                        </div>
+                    </div>
+                    <div class="color-slot" style="background-color: #a9a564;">
+                        <div class="color-info">
+                            <p class="bold big light">GREEN SMOKE</p>
+                            <hr>
+                            <p class="light"><span class="bold">HEX:</span> #a9a564</p>
+                            <p class="light"><span class="bold">RGB:</span> rgb(169, 165, 100)</p>
+                            <p class="light"><span class="bold">HSL:</span> hsl(57, 29%, 53%)</p>
+                            <p class="light"><span class="bold">CMYK:</span> cmyk(0, 2, 41, 34)</p>
+                        </div>
+                    </div>
+                    <div class="color-slot" style="background-color: #bc9593;">
+                        <div class="color-info">
+                            <p class="bold big light">QUICKSAND</p>
+                            <hr>
+                            <p class="light"><span class="bold">HEX:</span> #bc9593</p>
+                            <p class="light"><span class="bold">RGB:</span> rgb(188, 149, 147)</p>
+                            <p class="light"><span class="bold">HSL:</span> hsl(3, 23%, 66%)</p>
+                            <p class="light"><span class="bold">CMYK:</span> cmyk(0, 21, 22, 26)</p>
+                        </div>
+                    </div>
+                    <div class="color-slot" style="background-color: #efe287;">
+                        <div class="color-info">
+                            <p class="bold big dark">KHAKI</p>
+                            <hr>
+                            <p class="dark"><span class="bold">HEX:</span> #efe287</p>
+                            <p class="dark"><span class="bold">RGB:</span> rgb(239, 226, 135)</p>
+                            <p class="dark"><span class="bold">HSL:</span> hsl(52, 76%, 73%)</p>
+                            <p class="dark"><span class="bold">CMYK:</span> cmyk(0, 5, 44, 6)</p>
+                        </div>
+                    </div>
+                    <div class="color-slot" style="background-color: #2bdf9d;">
+                        <div class="color-info">
+                            <p class="bold big dark">CARIBBEAN GREEN</p>
+                            <hr>
+                            <p class="dark"><span class="bold">HEX:</span> #2bdf9d</p>
+                            <p class="dark"><span class="bold">RGB:</span> rgb(43, 223, 157)</p>
+                            <p class="dark"><span class="bold">HSL:</span> hsl(158, 74%, 52%)</p>
+                            <p class="dark"><span class="bold">CMYK:</span> cmyk(81, 0, 30, 13)</p>
+                        </div>
+                    </div>
+                </div>
+            </noscript>
+        </main>
+        <footer>
+            <div>
+                <p>&copy;2024 &mdash; <a href="https://www.thecolorapi.com/" title="Color API" target="_blank">color source</a></p>
+            </div>
+            <div class="definition">made colorful</div>
+        </footer>
+    </body>
+</html>

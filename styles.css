@@ -1,0 +1,355 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  * {
+    margin: 0;
+  }
+
+  html,
+  body {
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    width: 100%;
+    font-weight: 400;
+    font-style: normal;
+    font-family: sans-serif;
+    overflow: hidden;
+    height: 100%;
+  }
+
+  img, picture, video, canvas, svg {
+    display: block;
+    max-width: 100%;
+  }
+
+  input, button, textarea, select {
+    font: inherit;
+  }
+
+  p, h1, h2, h3, h4, h5, h6 {
+    overflow-wrap: break-word;
+  }
+
+  #root, #__next {
+    isolation: isolate;
+  }
+
+  a {
+    color: #222;
+    text-decoration: none;
+  }
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1;
+    background-color: #d4d4d4aa;
+    padding: 6px 20px 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    margin: 0;
+    z-index: 1;
+    background-color: #d4d4d4aa;
+    padding: 8px 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+h1 {
+    font-size: 3rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: -8px;
+    color: #222;
+    font-family: "Paytone One", sans-serif;
+}
+
+.definition {
+    font-weight: 500;
+    text-transform: lowercase;
+}
+
+#color-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    flex-grow: 1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+.color-slot {
+    width: 20%;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 20px;
+    text-align: left;
+    overflow: hidden;
+}
+
+.color-info {
+    font-size: 1rem;
+    font-family: sans-serif;
+    color: white;
+    background-color: #d4d4d433;
+    padding: 10px;
+    position: relative;
+    top: 80px;
+    margin: 5px;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.bold {
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.big {
+    font-size: 1.1rem;
+}
+
+.dark {
+    color: #222;
+}
+
+.light {
+    color: #eee;
+}
+
+hr {
+    border: 1px solid #d4d4d433;
+}
+
+.refresh-colors {
+    border: 0;
+    width: 48px;
+    height: 48px;
+    background-color: #222;
+    border-radius: 6px;
+    color: #eee;
+    margin: 0;
+    font-size: 1rem;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.refresh-colors:hover {
+    background-color: #444;
+}
+
+.refresh-colors:disabled {
+    background-color: #33444444;
+    color: #d4d4d4;
+}
+
+/* Add animation for fading in and out the instruction message */
+@keyframes fadeInOut {
+    0% { opacity: 0; }
+    50% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+.disabled-message {
+    font-size: 1.25rem;
+    color: #222;
+}
+
+/* Update styles for mobile */
+@media only screen and (min-width: 1201px) and (max-width: 1480px) {
+    #color-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0;
+        flex-grow: 1;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
+    }
+
+    .color-slot {
+        width: 20%;
+        height: 100vh; /* Extend to full height of viewport */
+        margin: 0;
+        box-sizing: border-box;
+        padding: 0; /* Remove padding */
+        text-align: left;
+        scroll-snap-align: start; /* Snap each color slot to the start of the viewport */
+        position: relative;
+    }
+    .color-info {
+        font-size: 0.75rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0;
+        flex-grow: 1;
+        flex-direction: column;
+        padding: 10px;
+        margin: 20px;
+        position: relative;
+        top: 80px;
+        border-radius: 4px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+}
+
+/* Update styles for mobile */
+@media only screen and (min-width: 931px) and (max-width: 1200px) {
+    header {
+        padding: 6px 0 8px 10px; /* Adjust header padding for mobile */
+    }
+
+    h1 {
+        font-size: 2rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-top: 0;
+    }
+
+    .refresh-colors {
+        width: 32px;
+        height: 32px;
+        padding: 0;
+        border-radius: 6px;
+        margin: 8px 15px;
+        font-size: 1rem;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    #color-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0;
+        flex-grow: 1;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
+    }
+
+    .color-slot {
+        width: 20%;
+        height: 100vh; /* Extend to full height of viewport */
+        margin: 0;
+        box-sizing: border-box;
+        padding: 0; /* Remove padding */
+        text-align: left;
+        scroll-snap-align: start; /* Snap each color slot to the start of the viewport */
+        position: relative;
+    }
+
+    .color-info {
+        font-size: 0.75rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0;
+        flex-grow: 1;
+        flex-direction: column;
+        padding: 8px 10px;
+        margin: 10px;
+        position: relative;
+        top: 70px;
+        border-radius: 4px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    .big {
+        font-size: 0.85rem;
+    }
+}
+
+
+/* Update styles for mobile */
+@media only screen and (min-width: 320px) and (max-width: 930px) {
+    html,
+    body {
+        overflow-y: scroll;
+        height: 100vh;
+        width: 100%;
+    }
+    header {
+        padding: 6px 0 8px 10px; /* Adjust header padding for mobile */
+    }
+
+    h1 {
+        font-size: 2rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-top: 0;
+    }
+
+    .refresh-colors {
+        width: 32px;
+        height: 32px;
+        padding: 0;
+        border-radius: 6px;
+        color: #eee;
+        margin: 8px 10px;
+        font-size: 1rem;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    #color-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        padding-top: 0; /* Adjust as needed for header height */
+        height: auto;
+        scroll-snap-type: y mandatory; /* Enable vertical scrolling snap */
+        width: 100vw;
+    }
+
+    .color-slot {
+        width: 100%; /* Extend to full width */
+        height: 100vh; /* Extend to full height of viewport */
+        margin-bottom: 0; /* Remove vertical margin */
+        box-sizing: border-box;
+        padding: 0; /* Remove padding */
+        text-align: left;
+        scroll-snap-align: start; /* Snap each color slot to the start of the viewport */
+        position: relative;
+    }
+
+    .color-info {
+        width: 100%; /* Extend to full width */
+        max-width: 75%; /* Limit width for readability */
+        margin: auto; /* Center horizontally */
+        position: relative;
+        top: 50%; /* Center vertically */
+        transform: translateY(-50%); /* Adjust vertical positioning */
+        border-radius: 4px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    footer {
+        padding: 8px 8px;
+        font-size: 0.65rem;
+    }
+}
