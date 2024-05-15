@@ -28,6 +28,9 @@ const generateColors = async (numColors) => {
     displayColors(colors);
 };
 
+// Function to validate hex color (required by getColorInfo)
+const isValidHexColor = (color) => /^#[0-9A-F]{6}$/i.test(color);
+
 // API call to send hex color to API and return values for the color
 const getColorInfo = async (hexColor) => {
     if (!isValidHexColor(hexColor)) {
@@ -60,9 +63,6 @@ const getColorInfo = async (hexColor) => {
     }
 };
 
-// Function to validate hex color
-const isValidHexColor = (color) => /^#[0-9A-F]{6}$/i.test(color);
-
 // Function to display colors on the page
 const displayColors = colors => {
     colors.forEach(color => {
@@ -83,7 +83,7 @@ const displayColors = colors => {
         <p><span class="bold">CMYK:</span> ${cmyk}</p>
         `;
 
-        const textColor = hex;
+        const textColor = getTextColor(color.hex);
         colorInfoDiv.style.color = textColor;
 
         colorSlot.appendChild(colorInfoDiv);
@@ -91,7 +91,14 @@ const displayColors = colors => {
     });
 };
 
-// Determine text color based on a dark or light color background?
+// Function to determine text color based on a dark or light color background (required by displayColors)
+const getTextColor = (hexColor) => {
+    const r = parseInt(hexColor.substring(1, 3), 16);
+    const g = parseInt(hexColor.substring(3, 5), 16);
+    const b = parseInt(hexColor.substring(5, 7), 16);
+    const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+    return brightness > 125 ? '#222' : '#eee';
+};
 
 // EventListener to show color container when JavaScript is enabled
 window.addEventListener('DOMContentLoaded', function () {
