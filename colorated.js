@@ -153,13 +153,13 @@ const checkPrevColorsAndTime = async () => {
 
 // EventListener to generate colors on load and enable the button (requires checkPrevColorsAndTime)
 window.addEventListener('load', async () => {
-    // Enables the button (This is necessary as the button is disabled initially to prevent the default active button and the noscript disabled button to both be displayed when JavaScript is disabled)
+    // Enables the button (This is necessary as the button is disabled initially to prevent the default active button and the noscript disabled button from both being displayed when JavaScript is disabled)
     button.style.display = 'inline-block';
     scrollUpDown(300, 500, 800);
     await checkPrevColorsAndTime();
 });
 
-// EventListener to show color container when JavaScript is enabled (This is necessary as the template is not displayed initially to prevent the template and the noscript block to both be displayed when JavaScript is disabled)
+// EventListener to show color container when JavaScript is enabled (This is necessary as the template is not displayed initially to prevent the template and the noscript block from both being displayed when JavaScript is disabled)
 window.addEventListener('DOMContentLoaded', () => {
     colorContainer.style.display = 'flex';
 });
