@@ -1,14 +1,14 @@
 const button = document.getElementById('generate-colors');
 const colorContainer = document.getElementById('color-container');
 
-// Generate a random value returning a hex format and name value
+// Function to generate a random value returning a hex format and name value
 const generateRandomColor = () => {
     const randomColor = Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
     const colorName = `#${randomColor}`;
     return { hex: colorName, name: randomColor };
 };
 
-// Generate colors from random number
+// Function to generate colors from random number
 const generateColors = async (numColors) => {
     colorContainer.innerHTML = '';
     const colorNames = [];
@@ -28,7 +28,7 @@ const generateColors = async (numColors) => {
     displayColors(colors);
 };
 
-// Send hex color to API and return values for the color
+// API call to send hex color to API and return values for the color
 const getColorInfo = async (hexColor) => {
     if (!isValidHexColor(hexColor)) {
         console.error(`Invalid hex value: ${hexColor}`);
@@ -60,22 +60,10 @@ const getColorInfo = async (hexColor) => {
     }
 };
 
-// Hex color validation
+// Function to validate hex color
 const isValidHexColor = (color) => /^#[0-9A-F]{6}$/i.test(color);
 
-// Show color container when JavaScript is enabled
-window.addEventListener('DOMContentLoaded', function () {
-    colorContainer.style.display = 'flex';
-});
-
-// Generate colors on load
-window.addEventListener('load', async () => {
-    button.style.display = 'inline-block';
-    button.disabled = false;
-    await generateColors(5);
-});
-
-// Display colors on the page
+// Function to display colors on the page
 const displayColors = colors => {
     colors.forEach(color => {
         const {hex, name, rgb, hsl, cmyk } = color;
@@ -105,8 +93,19 @@ const displayColors = colors => {
 
 // Determine text color based on a dark or light color background?
 
+// EventListener to show color container when JavaScript is enabled
+window.addEventListener('DOMContentLoaded', function () {
+    colorContainer.style.display = 'flex';
+});
 
-// Event listener for button click
+// EventListener to generate colors on load
+window.addEventListener('load', async () => {
+    button.style.display = 'inline-block';
+    button.disabled = false;
+    await generateColors(5);
+});
+
+// EventListener for button click to fetch new colors
 button.addEventListener('click', async function(event) {
     event.preventDefault();
     await generateColors(5);
