@@ -156,7 +156,7 @@ const disableButtonTimed = (secondsLeft = 30) => {
     localStorage.setItem('disabledTimestamp', disabledTimestamp);
 };
 
-// Function to start the countdown timer for disabling the button to fetch new colors (requires newButton)
+// Function to start the countdown timer for disabling the button to fetch new colors (requires enableButton)
 const startCountdown = (secondsLeft) => {
     const countdownInterval = setInterval(() => {
         secondsLeft--;
