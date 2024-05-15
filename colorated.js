@@ -64,7 +64,7 @@ const getColorInfo = async (hexColor) => {
     }
 };
 
-// Function to display colors on the page
+// Function to display colors on the page in the color info block
 const displayColors = colors => {
     colors.forEach(color => {
         const {hex, name, rgb, hsl, cmyk } = color;
@@ -101,6 +101,25 @@ const getTextColor = (hexColor) => {
     return brightness > 125 ? '#222' : '#eee';
 };
 
+// Function to animate the scrolling up and down of the page in mobile view for user experience with defaults set (required by button click EventListener and on load EventListener)
+const scrollUpDown = (position = 300, delayUp = 500, delayDown = 800) => {
+    window.scrollTo(0, 0);
+
+    setTimeout(() => {
+        window.scrollTo({
+            top: position,
+            behavior: 'smooth'
+        });
+
+        setTimeout(() => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }, delayDown);
+    }, delayUp);
+};
+
 // EventListener to show color container when JavaScript is enabled (This is necessary as the template is hidden initially to prevent the template and the noscript block to both be displayed when JavaScript is disabled)
 window.addEventListener('DOMContentLoaded', function () {
     colorContainer.style.display = 'flex';
@@ -112,12 +131,14 @@ window.addEventListener('load', async () => {
     button.style.display = 'inline-block';
     button.disabled = false;
     await generateColors(5);
+    scrollUpDown(300, 500, 800);
 });
 
 // EventListener for button click to fetch new colors
 button.addEventListener('click', async function(event) {
     event.preventDefault();
     await generateColors(5);
+    scrollUpDown(300, 500, 800);
 })
 
 // Disable button to fetch new colors for a set time to prevent frequent calls to the API or store additional colors in an array when initially making a call to the API for the 5 that are displayed and then display those when a user clicks to fetch new colors to simulate a delay?
