@@ -14,6 +14,9 @@ const generateRandomColor = () => {
 // Function to generate colors from random number
 const generateColors = async (numColors) => {
     colorContainer.innerHTML = '';
+    if (previousColors.length > 0) {
+        previousColors = [];
+    };
     const colorNames = [];
     const colorPromises = [];
 
@@ -164,13 +167,12 @@ window.addEventListener('DOMContentLoaded', () => {
 // EventListener for button click to fetch new colors
 button.addEventListener('click', async (event) => {
     event.preventDefault();
-    await generateColors(5);
     scrollUpDown(300, 500, 800);
     disableButtonTimed();
 });
 
 // Function to disable the button until the countdown is complete (requires startCountdown)
-const disableButtonTimed = (secondsLeft = 30) => {
+const disableButtonTimed = async (secondsLeft = 30) => {
     button.disabled = true;
     button.textContent = 'refresh';
     button.title = `Respectfully wait ${secondsLeft} seconds before fetching new colors`;
@@ -179,6 +181,8 @@ const disableButtonTimed = (secondsLeft = 30) => {
 
     disabledTimestamp = Date.now() - (30 - secondsLeft) * 1000;
     localStorage.setItem('disabledTimestamp', disabledTimestamp);
+
+    await generateColors(5);
 };
 
 // Function to start the countdown timer for disabling the button to fetch new colors (requires enableButton)
