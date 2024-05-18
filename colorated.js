@@ -14,9 +14,35 @@ const generateRandomColor = () => {
 // Function to generate colors from random number
 const generateColors = async (numColors) => {
     colorContainer.innerHTML = '';
-    if (previousColors.length > 0) {
-        previousColors = [];
-    };
+
+    // Check if previousColors is already populated and initialize if not
+    if (previousColors.length === 0) {
+        await retrievePreviousColors();
+    }
+
+    // Increment request counter
+    const requestCount = parseInt(localStorage.getItem('requestCount')) || 0;
+    localStorage.setItem('requestCount', requestCount + 1);
+
+    // Check if request count exceeds limit within timeFrame
+    const requestLimit = 25;
+    const timeFrame = 5 * 60 * 1000;
+    const currentTime = Date.now();
+    const lastRequestTime = parseInt(localStorage.getItem('lastRequestTime')) || 0;
+
+    if (currentTime - lastRequestTime < timeFrame) {
+        if (requestCount >= requestLimit) {
+            // Disable button if request limit is exceeded within timeFrame
+            button.disabled = true;
+            return;
+        }
+    } else {
+        // Reset request count and last request time if timeFrame has passed since last request
+        localStorage.setItem('requestCount', '1');
+    }
+    localStorage.setItem('lastRequestTime', currentTime);
+
+    // Continue with generating colors and making API requests
     const colorNames = [];
     const colorPromises = [];
 
@@ -168,21 +194,29 @@ window.addEventListener('DOMContentLoaded', () => {
 button.addEventListener('click', async (event) => {
     event.preventDefault();
     scrollUpDown(300, 500, 800);
-    disableButtonTimed();
+    // Disable the button only if the request limit is exceeded within the time frame
+    const requestCount = parseInt(localStorage.getItem('requestCount')) || 0;
+    const requestLimit = 30; // Number of requests allowed within the timeFrame
+    const timeFrame = 3 * 60 * 1000; // 5 minutes
+    const currentTime = Date.now();
+    const lastRequestTime = parseInt(localStorage.getItem('lastRequestTime')) || 0;
+    if (currentTime - lastRequestTime < timeFrame && requestCount >= requestLimit) {
+        disableButtonTimed(timeFrame); // Pass the time frame directly
+    } else {
+        await generateColors(5);
+    }
 });
 
 // Function to disable the button until the countdown is complete (requires startCountdown)
-const disableButtonTimed = async (secondsLeft = 30) => {
+const disableButtonTimed = async (timeFrame) => {
     button.disabled = true;
     button.textContent = 'refresh';
-    button.title = `Respectfully wait ${secondsLeft} seconds before fetching new colors`;
+    button.title = `Respectfully wait ${timeFrame / 1000} seconds before fetching new colors`;
 
-    startCountdown(secondsLeft);
+    startCountdown(timeFrame / 1000); // Convert timeFrame to seconds
 
-    disabledTimestamp = Date.now() - (30 - secondsLeft) * 1000;
+    disabledTimestamp = Date.now() - (timeFrame / 1000); // Set the disabledTimestamp to the current time
     localStorage.setItem('disabledTimestamp', disabledTimestamp);
-
-    await generateColors(5);
 };
 
 // Function to start the countdown timer for disabling the button to fetch new colors (requires enableButton)
@@ -197,6 +231,8 @@ const startCountdown = (secondsLeft) => {
         }
     }, 1000);
 };
+
+
 
 // Function to enable the button to allow fetching of new colors
 const enableButton = () => {
