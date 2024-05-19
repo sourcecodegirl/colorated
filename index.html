@@ -17,23 +17,47 @@
         <header>
             <h1>Colorated</h1>
             <noscript> <!-- Message when JavaScript is disabled -->
-                <div class="disabled-message">
+                <div class="error-message">
                     <p>This website requires JavaScript to function. Please enable JavaScript.</p>
                 </div>
             </noscript>
             <nav>
+                <div>
+                    <select id="color-scheme-select">
+                        <option value="random">Random Colors</option>
+                        <option value="monochrome">Monochrome</option>
+                        <option value="monochrome-dark">Monochrome Dark</option>
+                        <option value="monochrome-light">Monochrome Light</option>
+                        <option value="analogic">Analogic</option>
+                        <option value="complement">Complement</option>
+                        <option value="analogic-complement">Analogic Complement</option>
+                        <option value="triad">Triad</option>
+                        <option value="quad">Quad</option>
+                    </select>
                     <button class="refresh-colors material-symbols-outlined" id="generate-colors" title="Fetch new colors" style="display: none;">refresh</button> <!-- Initially not displayed to prevent button from also being displayed when JavaScript is disabled -->
                 <noscript> <!-- Display disabled button when JavaScript is disabled -->
+                    <select id="color-scheme-select" disabled>
+                        <option value="disabled">Disabled</option>
+                        <option value="random">Random</option>
+                        <option value="monochrome">Monochrome</option>
+                        <option value="monochrome-dark">Monochrome Dark</option>
+                        <option value="monochrome-light">Monochrome Light</option>
+                        <option value="analogic">Analogic</option>
+                        <option value="complement">Complement</option>
+                        <option value="analogic-complement">Analogic Complement</option>
+                        <option value="triad">Triad</option>
+                        <option value="quad">Quad</option>
+                    </select>
                     <button class="refresh-colors material-symbols-outlined" id="generate-colors" title="Fetch new colors" disabled>refresh</button>
                 </noscript>
+                </div>
             </nav>
         </header>
         <main>
-            <div style="display: none;" id="color-container"> <!-- Template for 5 color slots with placeholder data -->
+            <div id="color-container"> <!-- Template for 5 color slots with placeholder data -->
                 <div class="color-slot" style="background-color: #c8b5e5;">
                     <div class="color-info">
-                        <p class="bold big dark">PRELUDE</p>
-                        <hr>
+                        <h3 class="dark">PRELUDE</h3>
                         <p class="dark"><span class="bold">HEX</span> #c8b5e5</p>
                         <p class="dark"><span class="bold">RGB:</span> rgb(200, 181, 229)</p>
                         <p class="dark"><span class="bold">HSL:</span> hsl(264, 48%, 80%)</p>
@@ -42,8 +66,7 @@
                 </div>
                 <div class="color-slot" style="background-color: #a9a564;">
                     <div class="color-info">
-                        <p class="bold big light">GREEN SMOKE</p>
-                        <hr>
+                        <h3 class="light">GREEN SMOKE</h3>
                         <p class="light"><span class="bold">HEX:</span> #a9a564</p>
                         <p class="light"><span class="bold">RGB:</span> rgb(169, 165, 100)</p>
                         <p class="light"><span class="bold">HSL:</span> hsl(57, 29%, 53%)</p>
@@ -52,8 +75,7 @@
                 </div>
                 <div class="color-slot" style="background-color: #bc9593;">
                     <div class="color-info">
-                        <p class="bold big light">QUICKSAND</p>
-                        <hr>
+                        <h3 class="light">QUICKSAND</h3>
                         <p class="light"><span class="bold">HEX:</span> #bc9593</p>
                         <p class="light"><span class="bold">RGB:</span> rgb(188, 149, 147)</p>
                         <p class="light"><span class="bold">HSL:</span> hsl(3, 23%, 66%)</p>
@@ -62,8 +84,7 @@
                 </div>
                 <div class="color-slot" style="background-color: #efe287;">
                     <div class="color-info">
-                        <p class="bold big dark">KHAKI</p>
-                        <hr>
+                        <h3 class="dark">KHAKI</h3>
                         <p class="dark"><span class="bold">HEX:</span> #efe287</p>
                         <p class="dark"><span class="bold">RGB:</span> rgb(239, 226, 135)</p>
                         <p class="dark"><span class="bold">HSL:</span> hsl(52, 76%, 73%)</p>
@@ -72,8 +93,7 @@
                 </div>
                 <div class="color-slot" style="background-color: #2bdf9d;">
                     <div class="color-info">
-                        <p class="bold big dark">CARIBBEAN GREEN</p>
-                        <hr>
+                        <h3 class="dark">CARIBBEAN GREEN</h3>
                         <p class="dark"><span class="bold">HEX:</span> #2bdf9d</p>
                         <p class="dark"><span class="bold">RGB:</span> rgb(43, 223, 157)</p>
                         <p class="dark"><span class="bold">HSL:</span> hsl(158, 74%, 52%)</p>
@@ -85,8 +105,7 @@
                 <div id="color-container">
                     <div class="color-slot" style="background-color: #c8b5e5;">
                         <div class="color-info">
-                            <p class="bold big dark">PRELUDE</p>
-                            <hr>
+                            <h3 class="dark">PRELUDE</h3>
                             <p class="dark"><span class="bold">HEX:</span> #c8b5e5</p>
                             <p class="dark"><span class="bold">RGB:</span> rgb(200, 181, 229)</p>
                             <p class="dark"><span class="bold">HSL:</span> hsl(264, 48%, 80%)</p>
@@ -95,8 +114,7 @@
                     </div>
                     <div class="color-slot" style="background-color: #a9a564;">
                         <div class="color-info">
-                            <p class="bold big light">GREEN SMOKE</p>
-                            <hr>
+                            <h3 class="light">GREEN SMOKE</h3>
                             <p class="light"><span class="bold">HEX:</span> #a9a564</p>
                             <p class="light"><span class="bold">RGB:</span> rgb(169, 165, 100)</p>
                             <p class="light"><span class="bold">HSL:</span> hsl(57, 29%, 53%)</p>
@@ -105,8 +123,7 @@
                     </div>
                     <div class="color-slot" style="background-color: #bc9593;">
                         <div class="color-info">
-                            <p class="bold big light">QUICKSAND</p>
-                            <hr>
+                            <h3 class="light">QUICKSAND</h3>
                             <p class="light"><span class="bold">HEX:</span> #bc9593</p>
                             <p class="light"><span class="bold">RGB:</span> rgb(188, 149, 147)</p>
                             <p class="light"><span class="bold">HSL:</span> hsl(3, 23%, 66%)</p>
@@ -115,8 +132,7 @@
                     </div>
                     <div class="color-slot" style="background-color: #efe287;">
                         <div class="color-info">
-                            <p class="bold big dark">KHAKI</p>
-                            <hr>
+                            <h3 class="dark">KHAKI</h3>
                             <p class="dark"><span class="bold">HEX:</span> #efe287</p>
                             <p class="dark"><span class="bold">RGB:</span> rgb(239, 226, 135)</p>
                             <p class="dark"><span class="bold">HSL:</span> hsl(52, 76%, 73%)</p>
@@ -125,8 +141,7 @@
                     </div>
                     <div class="color-slot" style="background-color: #2bdf9d;">
                         <div class="color-info">
-                            <p class="bold big dark">CARIBBEAN GREEN</p>
-                            <hr>
+                            <h3 class="dark">CARIBBEAN GREEN</h3>
                             <p class="dark"><span class="bold">HEX:</span> #2bdf9d</p>
                             <p class="dark"><span class="bold">RGB:</span> rgb(43, 223, 157)</p>
                             <p class="dark"><span class="bold">HSL:</span> hsl(158, 74%, 52%)</p>

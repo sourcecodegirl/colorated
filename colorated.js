@@ -1,5 +1,6 @@
 const button = document.getElementById('generate-colors');
 const colorContainer = document.getElementById('color-container');
+const colorSchemeSelect = document.getElementById('color-scheme-select');
 
 let disabledTimestamp = null;
 let previousColors = [];
@@ -12,13 +13,8 @@ const generateRandomColor = () => {
 };
 
 // Function to generate colors from random number
-const generateColors = async (numColors) => {
+const generateColors = async (numColors, selectedScheme) => {
     colorContainer.innerHTML = '';
-
-    // Check if previousColors is already populated and initialize if not
-    if (previousColors.length === 0) {
-        await retrievePreviousColors();
-    }
 
     // Increment request counter
     const requestCount = parseInt(localStorage.getItem('requestCount')) || 0;
@@ -43,20 +39,25 @@ const generateColors = async (numColors) => {
     localStorage.setItem('lastRequestTime', currentTime);
 
     // Continue with generating colors and making API requests
-    const colorNames = [];
-    const colorPromises = [];
+    let colors = [];
 
-    for (let i = 0; i < numColors; i++) {
-        let color;
-        do {
-            color = generateRandomColor();
-        } while (colorNames.includes(color.name));
-
-        colorNames.push(color.name);
-        colorPromises.push(getColorInfo(color.hex));
+    if (selectedScheme === 'random') {
+        const existingNames = new Set(); // Set to store existing color names
+        while (colors.length < numColors) {
+            const color = generateRandomColor();
+            if (!existingNames.has(color.name)) {
+                existingNames.add(color.name);
+                colors.push(color);
+            }
+        }
+        const colorPromises = colors.map(color => getColorInfo(color.hex, false, selectedScheme));
+        colors = await Promise.all(colorPromises);
+    } else {
+        // Fetch colors based on selected color scheme
+        colors = await getColorInfo(generateRandomColor().hex, true, selectedScheme);
+        colors = colors.slice(0, numColors);
     }
 
-    const colors = await Promise.all(colorPromises);
     previousColors = colors; // Save generated colors
     localStorage.setItem('previousColors', JSON.stringify(previousColors)); // Store generated colors to localStorage
     displayColors(colors);
@@ -66,35 +67,58 @@ const generateColors = async (numColors) => {
 const isValidHexColor = (color) => /^#[0-9A-F]{6}$/i.test(color);
 
 // API call to send hex color to API and return values for the color
-const getColorInfo = async (hexColor) => {
+const getColorInfo = async (hexColor, fetchColorScheme = false, selectedScheme) => {
     if (!isValidHexColor(hexColor)) {
-        console.error(`Invalid hex value: ${hexColor}`);
+        const errorMessage = `Invalid hex value: ${hexColor}`;
+        console.error(errorMessage);
+        appendErrorMessage(errorMessage);
         return;
     }
 
-    const apiUrl = 'https://www.thecolorapi.com/id';
+    const apiUrl = fetchColorScheme ? 'https://www.thecolorapi.com/scheme' : 'https://www.thecolorapi.com/id';
+
     const params = new URLSearchParams({
         hex: hexColor,
         format: 'json'
     });
+
+    if (fetchColorScheme) {
+        params.set('mode', selectedScheme);
+        params.set('count', '5');
+    }
+
     const url = `${apiUrl}?${params}`;
 
     try {
         const response = await fetch(url);
         if (!response.ok) {
-            console.error(`Network response was bad for color: ${hexColor}`);
+            const errorMessage = `Network response was bad for color: ${hexColor} - Status: ${response.status}`;
+            console.error(errorMessage);
+            appendErrorMessage(errorMessage);
             return;
         }
         const data = await response.json();
-        return {
-            hex: hexColor,
-            name: data.name.value,
-            rgb: data.rgb.value,
-            hsl: data.hsl.value,
-            cmyk: data.cmyk.value
-        };
+        if (fetchColorScheme) {
+            return data.colors.map(color => ({
+                hex: color.hex.value,
+                name: color.name.value,
+                rgb: color.rgb.value,
+                hsl: color.hsl.value,
+                cmyk: color.cmyk.value
+            }));
+        } else {
+            return {
+                hex: hexColor,
+                name: data.name.value,
+                rgb: data.rgb.value,
+                hsl: data.hsl.value,
+                cmyk: data.cmyk.value
+            };
+        }
     } catch (error) {
-        console.error(`There was an error fetching colors: ${error}`);
+        const errorMessage = `There was an error fetching colors: ${error}`;
+        console.error(errorMessage);
+        appendErrorMessage(errorMessage);
     }
 };
 
@@ -110,8 +134,7 @@ const displayColors = colors => {
         const colorInfoDiv = document.createElement('div');
         colorInfoDiv.classList.add('color-info');
         colorInfoDiv.innerHTML = `
-        <p class="bold big">${name}</p>
-        <hr>
+        <h3>${name}</h3>
         <p><span class="bold">HEX:</span> ${hex}</p>
         <p><span class="bold">RGB:</span> ${rgb}</p>
         <p><span class="bold">HSL:</span> ${hsl}</p>
@@ -167,14 +190,20 @@ const checkPrevColorsAndTime = async () => {
         
         if (elapsedTime < 30) {
             const remainingSeconds = 30 - elapsedTime;
-            disableButtonTimed(remainingSeconds);
+            await disableButtonTimed(remainingSeconds);
             displayColors(previousColors);
         } else {
             button.disabled = false;
         }
-    } else {
-        await generateColors(5);
     }
+};
+
+// Function to display error messages in the error-message div
+const appendErrorMessage = (errorMessage) => {
+    const errorMessageDiv = document.querySelector('.error-message');
+    const p = document.createElement('p');
+    p.textContent = errorMessage;
+    errorMessageDiv.appendChild(p);
 };
 
 // EventListener to generate colors on load and enable the button (requires checkPrevColorsAndTime)
@@ -190,11 +219,9 @@ window.addEventListener('DOMContentLoaded', () => {
     colorContainer.style.display = 'flex';
 });
 
-// EventListener for button click to fetch new colors
 button.addEventListener('click', async (event) => {
     event.preventDefault();
     scrollUpDown(300, 500, 800);
-    // Disable the button only if the request limit is exceeded within the time frame
     const requestCount = parseInt(localStorage.getItem('requestCount')) || 0;
     const requestLimit = 30; // Number of requests allowed within the timeFrame
     const timeFrame = 3 * 60 * 1000; // 5 minutes
@@ -203,7 +230,8 @@ button.addEventListener('click', async (event) => {
     if (currentTime - lastRequestTime < timeFrame && requestCount >= requestLimit) {
         disableButtonTimed(timeFrame); // Pass the time frame directly
     } else {
-        await generateColors(5);
+        const selectedScheme = colorSchemeSelect.value;
+        await generateColors(5, selectedScheme);
     }
 });
 
@@ -224,7 +252,8 @@ const startCountdown = (secondsLeft) => {
     const countdownInterval = setInterval(() => {
         secondsLeft--;
         if (secondsLeft > 0) {
-            button.title = `Respectfully wait ${secondsLeft} seconds before fetching new colors`;
+            const remainingTime = formatTime(secondsLeft);
+            button.title = `Respectfully wait ${remainingTime} before fetching new colors`;
         } else {
             clearInterval(countdownInterval);
             enableButton();
@@ -232,7 +261,12 @@ const startCountdown = (secondsLeft) => {
     }, 1000);
 };
 
-
+// Function to format remaining time into minutes and seconds
+const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+};
 
 // Function to enable the button to allow fetching of new colors
 const enableButton = () => {
@@ -240,9 +274,3 @@ const enableButton = () => {
     button.textContent = 'refresh';
     button.title = 'Push to fetch colors';
 };
-
-// Alternative to disabling the button for a set time, maybe store additional colors in an array during initial call to the API and then display those in groups of 5 when a user clicks to fetch new colors to simulate a delay so the user isn't aware of the delay
-
-// Check previous colors stored in localstorage and display those when refreshing page instead of displaying the colors from the placeholder template?
-
-// Add user input to search for a color

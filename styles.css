@@ -54,6 +54,11 @@ header {
     margin: 0;
 }
 
+nav {
+    display: flex;
+    align-items: center;
+}
+
 footer {
     position: fixed;
     bottom: 0;
@@ -76,6 +81,51 @@ h1 {
     font-family: "Paytone One", sans-serif;
 }
 
+h3 {
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    font-weight: 800;
+    border-bottom: 1px solid #d4d4d4aa;
+}
+
+select {
+    appearance: none;
+    background-color: #44444333;
+    border: solid 1px #444;
+    border-radius: 4px;
+    padding: 10px;
+    margin: 0;
+    margin-right: 6px;
+    color: #222;
+    cursor: pointer;
+    width: 200px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+select:hover {
+    appearance: none;
+    background-color: #44444333;
+    border: solid 1px #444;
+    border-radius: 4px;
+    padding: 10px;
+    color: #222;
+    cursor: pointer;
+    width: 200px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+  
+select:focus {
+    appearance: none;
+    background-color: #44444333;
+    border: solid 1px #444;
+    border-radius: 4px;
+    padding: 10px;
+    color: #222;
+    cursor: pointer;
+    width: 200px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}  
+
 .definition {
     font-weight: 500;
     text-transform: lowercase;
@@ -97,6 +147,7 @@ h1 {
 }
 
 .color-slot {
+    position: relative;
     width: 20%;
     height: 100%;
     box-sizing: border-box;
@@ -135,10 +186,6 @@ h1 {
     color: #eee;
 }
 
-hr {
-    border: 1px solid #d4d4d433;
-}
-
 .refresh-colors {
     display: inline-block;
     border: 0;
@@ -150,6 +197,8 @@ hr {
     margin: 0;
     font-size: 1rem;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    vertical-align: middle;
+    line-height: 48px;
 }
 
 .refresh-colors:hover {
@@ -168,7 +217,7 @@ hr {
     100% { opacity: 0; }
 }
 
-.disabled-message {
+.error-message {
     font-size: 1.25rem;
     color: #222;
 }
@@ -200,6 +249,7 @@ hr {
         scroll-snap-align: start; /* Snap each color slot to the start of the viewport */
         position: relative;
     }
+
     .color-info {
         font-size: 0.75rem;
         display: flex;
@@ -212,6 +262,23 @@ hr {
         position: relative;
         top: 80px;
         border-radius: 4px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    select,
+    select:hover,
+    select:focus {
+        appearance: none;
+        background-color: #44444333;
+        border: solid 1px #444;
+        border-radius: 4px;
+        font-size: 1rem;
+        padding: 10px;
+        margin: 0;
+        margin-right: 6px;
+        color: #222;
+        cursor: pointer;
+        width: 200px;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     }
 }
@@ -283,8 +350,23 @@ hr {
     .big {
         font-size: 0.85rem;
     }
-}
 
+    select,
+    select:hover,
+    select:focus {
+        appearance: none;
+        background-color: #44444333;
+        border: solid 1px #444;
+        font-size: 0.85rem;
+        border-radius: 4px;
+        padding: 4px;
+        margin: 0;
+        color: #222;
+        cursor: pointer;
+        width: 180px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+}
 
 /* Update styles for mobile */
 @media only screen and (min-width: 320px) and (max-width: 930px) {
@@ -311,7 +393,7 @@ hr {
         padding: 0;
         border-radius: 6px;
         color: #eee;
-        margin: 8px 10px;
+        margin: 8px 10px 8px 3px;
         font-size: 1rem;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     }
@@ -346,6 +428,22 @@ hr {
         top: 50%; /* Center vertically */
         transform: translateY(-50%); /* Adjust vertical positioning */
         border-radius: 4px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    select,
+    select:hover,
+    select:focus {
+        appearance: none;
+        background-color: #44444333;
+        border: solid 1px #444;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        padding: 5px;
+        margin: 0;
+        color: #222;
+        cursor: pointer;
+        width: 100px;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     }
 
