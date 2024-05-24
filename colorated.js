@@ -1,6 +1,8 @@
+// color generator using The Color API: https://www.thecolorapi.com/
 const button = document.getElementById('generate-colors');
 const colorContainer = document.getElementById('color-container');
 const colorSchemeSelect = document.getElementById('color-scheme-select');
+const errorMessageDiv = document.querySelector('.error-message');
 
 let disabledTimestamp = null;
 let previousColors = [];
@@ -59,7 +61,8 @@ const generateColors = async (numColors, selectedScheme) => {
     }
 
     previousColors = colors; // Save generated colors
-    localStorage.setItem('previousColors', JSON.stringify(previousColors)); // Store generated colors to localStorage
+    localStorage.setItem('previousColors', JSON.stringify(previousColors));
+    
     displayColors(colors);
 };
 
@@ -75,7 +78,9 @@ const getColorInfo = async (hexColor, fetchColorScheme = false, selectedScheme) 
         return;
     }
 
-    const apiUrl = fetchColorScheme ? 'https://www.thecolorapi.com/scheme' : 'https://www.thecolorapi.com/id';
+    const randomColorsUrl = 'https://www.thecolorapi.com/id';
+    const colorSchemesUrl = 'https://www.thecolorapi.com/scheme';
+    const apiUrl = fetchColorScheme ? colorSchemesUrl : randomColorsUrl;
 
     const params = new URLSearchParams({
         hex: hexColor,
@@ -149,7 +154,8 @@ const displayColors = colors => {
     });
 };
 
-// Function to determine text color based on a dark or light color background (required by displayColors)
+// Function to dynamically change text color based on a dark or light color background (required by displayColors)
+// https://gomakethings.com/dynamically-changing-the-text-color-based-on-background-color-contrast-with-vanilla-js/
 const getTextColor = (hexColor) => {
     const r = parseInt(hexColor.substring(1, 3), 16);
     const g = parseInt(hexColor.substring(3, 5), 16);
@@ -159,6 +165,7 @@ const getTextColor = (hexColor) => {
 };
 
 // Function to animate the scrolling up and down of the page in mobile view for user experience with defaults set (required by button click EventListener and on load EventListener)
+// https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollTo
 const scrollUpDown = (position = 300, delayUp = 500, delayDown = 800) => {
     window.scrollTo(0, 0);
 
@@ -200,7 +207,6 @@ const checkPrevColorsAndTime = async () => {
 
 // Function to display error messages in the error-message div
 const appendErrorMessage = (errorMessage) => {
-    const errorMessageDiv = document.querySelector('.error-message');
     const p = document.createElement('p');
     p.textContent = errorMessage;
     errorMessageDiv.appendChild(p);
@@ -221,14 +227,14 @@ window.addEventListener('DOMContentLoaded', () => {
 
 button.addEventListener('click', async (event) => {
     event.preventDefault();
-    scrollUpDown(300, 500, 800);
+    // scrollUpDown(300, 500, 800);
     const requestCount = parseInt(localStorage.getItem('requestCount')) || 0;
-    const requestLimit = 30; // Number of requests allowed within the timeFrame
+    const requestLimit = 15; // Number of requests allowed within the timeFrame
     const timeFrame = 3 * 60 * 1000; // 5 minutes
     const currentTime = Date.now();
     const lastRequestTime = parseInt(localStorage.getItem('lastRequestTime')) || 0;
     if (currentTime - lastRequestTime < timeFrame && requestCount >= requestLimit) {
-        disableButtonTimed(timeFrame); // Pass the time frame directly
+        disableButtonTimed(timeFrame); // Pass the timeFrame directly
     } else {
         const selectedScheme = colorSchemeSelect.value;
         await generateColors(5, selectedScheme);
