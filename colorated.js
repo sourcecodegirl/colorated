@@ -1,4 +1,4 @@
-// color generator using The Color API: https://www.thecolorapi.com/
+// Color generator using The Color API: https://www.thecolorapi.com/
 const button = document.getElementById('generate-colors');
 const colorContainer = document.getElementById('color-container');
 const colorSchemeSelect = document.getElementById('color-scheme-select');
@@ -11,44 +11,21 @@ let disabledTimestamp = null;
 const generateRandomColor = () => {
     const randomColor = Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
     const colorName = `#${randomColor}`;
-    console.log(`Randomly generated color: ${colorName}`);
     return { hex: colorName, name: randomColor };
 };
 
-// Function to generate colors from random number
+// Function to generate colors based on scheme selected
 const generateColors = async (numColors, selectedScheme) => {
+    if (!checkRequestLimit()) return;
+    incrementRequestCount();
     colorContainer.innerHTML = '';
 
-    // Increment request counter
-    const requestCount = parseInt(localStorage.getItem('requestCount')) || 0;
-    localStorage.setItem('requestCount', requestCount + 1);
-
-    // Check if request count exceeds limit within timeFrame
-    const requestLimit = 25;
-    const timeFrame = 5 * 60 * 1000;
-    const currentTime = Date.now();
-    const lastRequestTime = parseInt(localStorage.getItem('lastRequestTime')) || 0;
-
-    if (currentTime - lastRequestTime < timeFrame) {
-        if (requestCount >= requestLimit) {
-            // Disable button if request limit is exceeded within timeFrame
-            button.disabled = true;
-            return;
-        }
-    } else {
-        // Reset request count and last request time if timeFrame has passed since last request
-        localStorage.setItem('requestCount', '1');
-    }
-    localStorage.setItem('lastRequestTime', currentTime);
-
-    // Continue with generating colors and making API requests
     let colors = [];
 
     if (selectedScheme === 'random') {
-        const existingNames = new Set(); // Set to store existing color names
+        const existingNames = new Set();
         while (colors.length < numColors) {
             const color = generateRandomColor();
-            // Retrieve only unique colors based on their name as the API has colors with the same names
             if (!existingNames.has(color.name)) {
                 existingNames.add(color.name);
                 colors.push(color);
@@ -57,11 +34,23 @@ const generateColors = async (numColors, selectedScheme) => {
         const colorPromises = colors.map(color => getColorInfo(color.hex, false, selectedScheme));
         colors = await Promise.all(colorPromises);
     } else {
-        // Fetch colors based on selected color scheme
-        colors = await getColorInfo(generateRandomColor().hex, true, selectedScheme);
+        let hexColor = colorSearch.value.trim();
+        if (!hexColor) {
+            const randomColor = generateRandomColor();
+            hexColor = randomColor.hex;
+            colorSearch.value = hexColor;
+            colorSearch.value = '';
+        } else {
+            if (!isValidHexColor(hexColor)) {
+                const errorMessage = `Invalid hex value: ${hexColor}`;
+                console.error(errorMessage);
+                appendErrorMessage(errorMessage);
+                return;
+            }
+        }
+        colors = await getColorInfo(hexColor, true, selectedScheme);
         colors = colors.slice(0, numColors);
     }
-    
     displayColors(colors);
 };
 
@@ -123,6 +112,7 @@ const getColorInfo = async (hexColor, fetchColorScheme = false, selectedScheme) 
         const errorMessage = `There was an error fetching colors: ${error}`;
         console.error(errorMessage);
         appendErrorMessage(errorMessage);
+        return;
     }
 };
 
@@ -183,6 +173,34 @@ const scrollUpDown = (position = 300, delayUp = 500, delayDown = 800) => {
     }, delayUp);
 };
 
+// Function to check requests and limit and disable the button to prevent too many requests to the API
+const checkRequestLimit = () => {
+    const requestCount = parseInt(localStorage.getItem('requestCount')) || 0;
+    const requestLimit = 30;
+    const timeFrame = 3 * 60 * 1000; // 3 minutes
+    const currentTime = Date.now();
+    const lastRequestTime = parseInt(localStorage.getItem('lastRequestTime')) || 0;
+
+    if (currentTime - lastRequestTime < timeFrame) {
+        if (requestCount >= requestLimit) {
+            button.disabled = true;
+            disableButtonTimed(timeFrame - (currentTime - lastRequestTime));
+            return false;
+        }
+    } else {
+        localStorage.setItem('requestCount', '0');
+        localStorage.setItem('lastRequestTime', currentTime);
+    }
+
+    return true;
+};
+
+// Function to increment the request count
+const incrementRequestCount = () => {
+    const requestCount = parseInt(localStorage.getItem('requestCount')) || 0;
+    localStorage.setItem('requestCount', requestCount + 1);
+};
+
 // Function to check colors were saved and countdown active for disabled button (requires disableButtonTimed, displayColors, generateColors)
 const checkTime = async () => {
     const savedTimestamp = localStorage.getItem('disabledTimestamp');
@@ -224,48 +242,33 @@ window.addEventListener('DOMContentLoaded', () => {
     colorContainer.style.display = 'flex';
 });
 
+// EventListener to generate and display colors on the page
 button.addEventListener('click', async (event) => {
     event.preventDefault();
-    window.scrollTo(0, 0); // Make sure to start at the top of the page when in mobile view
-    const requestCount = parseInt(localStorage.getItem('requestCount')) || 0;
-    const requestLimit = 30; // Number of colors requested allowed within the timeFrame
-    const timeFrame = 3 * 60 * 1000; // 5 minutes
-    const currentTime = Date.now();
-    const lastRequestTime = parseInt(localStorage.getItem('lastRequestTime')) || 0;
-    
-    if (currentTime - lastRequestTime < timeFrame && requestCount >= requestLimit) {
-        disableButtonTimed(timeFrame); // Pass the timeFrame directly
-    } else {
-            // Get the hex color from the input field
-            let hexColor = colorSearch.value.trim();
-    
-            // Check if the input field is empty
-            if (!hexColor) {
-                // Generate a random color if the input field is empty
-                const randomColor = generateRandomColor();
-                hexColor = randomColor.hex;
+    window.scrollTo(0, 0);
+    if (!checkRequestLimit()) return;
 
-                // Update the input field with the randomly generated color
-                colorSearch.value = hexColor;
-                console.log(`Randomly generated: ${hexColor}`);
+    const selectedScheme = colorSchemeSelect.value;
+    let hexColor = '';
 
-                // Clear the input field before generating another color
-                colorSearch.value = '';
-            } else {
-                // Validate the hex input
-                if (!isValidHexColor(hexColor)) {
-                    console.log(`Invalid hex color: ${hexColor}`);
-                    return;
+    if (selectedScheme !== 'random') {
+        hexColor = colorSearch.value.trim();
+        if (!hexColor) {
+            const randomColor = generateRandomColor();
+            hexColor = randomColor.hex;
+        } else {
+            if (!isValidHexColor(hexColor)) {
+                const errorMessage = `Invalid hex value: ${hexColor}`;
+                console.error(errorMessage);
+                appendErrorMessage(errorMessage);
+                return;
             }
-
-            console.log(`User input: ${hexColor}`);
         }
-
-        const selectedScheme = colorSchemeSelect.value;
-        console.log(`Color scheme: ${selectedScheme}`);
-        await generateColors(5, selectedScheme);
     }
+
+    await generateColors(5, selectedScheme);
 });
+
 
 // Function to disable the button until the countdown is complete (requires startCountdown)
 const disableButtonTimed = async (timeFrame) => {
