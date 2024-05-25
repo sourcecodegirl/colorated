@@ -227,7 +227,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 button.addEventListener('click', async (event) => {
     event.preventDefault();
-    // scrollUpDown(300, 500, 800);
+    window.scrollTo(0, 0); // Make sure to start at the top of the page when in mobile view
     const requestCount = parseInt(localStorage.getItem('requestCount')) || 0;
     const requestLimit = 15; // Number of requests allowed within the timeFrame
     const timeFrame = 3 * 60 * 1000; // 5 minutes
