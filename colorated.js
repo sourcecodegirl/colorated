@@ -66,6 +66,7 @@ const generateColors = async (numColors, selectedScheme) => {
     }
     
     displayColors(colors);
+    colorSearch.value = hexColor;
 };
 
 // Function to validate hex color (required by getColorInfo)
@@ -239,6 +240,7 @@ const appendErrorMessage = (errorMessage) => {
     const p = document.createElement('p');
     p.textContent = errorMessage;
     errorMessageDiv.appendChild(p);
+    errorMessageDiv.style.display = 'inline-block';
 };
 
 // EventListener to generate colors on load and enable the button (requires checkPrevColorsAndTime)

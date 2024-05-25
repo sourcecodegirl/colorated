@@ -226,6 +226,7 @@ input:focus {
 .error-message {
     font-size: 1.25rem;
     color: var(--primary-color);
+    z-index: 2;
 }
 
 /* Update styles for mobile */
