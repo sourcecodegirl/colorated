@@ -1,3 +1,20 @@
+:root {
+    --primary-color: #222;
+    --bg-color: #d4d4d4aa;
+    --name-color: #fff;
+    --button-bg-color: #222;
+    --button-color: #eee;
+    --button-bg-hover-color: #444;
+    --button-disabled-bg-color: #33444444;
+    --button-disabled-color: #d4d4d4;
+    --dropdown-bg-color: #44444333;
+    --dropdown-color: #444;
+    --input-bg-color: #44444333;
+    --input-color: #444;
+    --light-color: #eee;
+    --dark-color: #222;
+}
+
 *, *::before, *::after {
     box-sizing: border-box;
   }
@@ -31,12 +48,8 @@
     overflow-wrap: break-word;
   }
 
-  #root, #__next {
-    isolation: isolate;
-  }
-
   a {
-    color: #222;
+    color: var(--primary-color);
     text-decoration: none;
   }
 
@@ -46,7 +59,7 @@ header {
     left: 0;
     width: 100%;
     z-index: 1;
-    background-color: #d4d4d4aa;
+    background-color: var(--bg-color);
     padding: 6px 20px 8px;
     display: flex;
     justify-content: space-between;
@@ -66,7 +79,7 @@ footer {
     width: 100%;
     margin: 0;
     z-index: 1;
-    background-color: #d4d4d4aa;
+    background-color: var(--bg-color);
     padding: 8px 10px;
     display: flex;
     justify-content: space-between;
@@ -77,7 +90,7 @@ h1 {
     text-transform: uppercase;
     letter-spacing: 2px;
     margin-top: -8px;
-    color: #222;
+    color: var(--primary-color);
     font-family: "Paytone One", sans-serif;
 }
 
@@ -85,20 +98,20 @@ h3 {
     font-size: 1.1rem;
     text-transform: uppercase;
     font-weight: 800;
-    border-bottom: 1px solid #d4d4d4aa;
+    border-bottom: 1px solid var(--bg-color);
 }
 
 select,
 select:hover,
 select:focus {
     appearance: none;
-    background-color: #44444333;
-    border: solid 1px #444;
+    background-color: var(--dropdown-bg-color);
+    border: solid 1px var(--dropdown-color);
     border-radius: 4px;
     padding: 10px;
     margin: 0;
     margin-right: 6px;
-    color: #222;
+    color: var(--primary-color);
     cursor: pointer;
     width: 200px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -108,13 +121,13 @@ input,
 input:hover,
 input:focus {
     appearance: none;
-    background-color: #44444333;
-    border: solid 1px #444;
+    background-color: var(--input-bg-color);
+    border: solid 1px var(--input-color);
     border-radius: 4px;
     padding: 10px;
     margin: 0;
     margin-right: 6px;
-    color: #222;
+    color: var(--primary-color);
     width: 120px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
@@ -152,8 +165,8 @@ input:focus {
 .color-info {
     font-size: 1rem;
     font-family: sans-serif;
-    color: white;
-    background-color: #d4d4d433;
+    color: var(--name-color);
+    background-color: var(--bg-color);
     padding: 10px;
     position: relative;
     top: 80px;
@@ -172,11 +185,11 @@ input:focus {
 }
 
 .dark {
-    color: #222;
+    color: var(--dark-color);
 }
 
 .light {
-    color: #eee;
+    color: var(--light-color);
 }
 
 .refresh-colors {
@@ -184,9 +197,9 @@ input:focus {
     border: 0;
     width: 48px;
     height: 48px;
-    background-color: #222;
+    background-color: var(--button-bg-color);
     border-radius: 6px;
-    color: #eee;
+    color: var(--button-color);
     margin: 0;
     font-size: 1rem;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -195,12 +208,12 @@ input:focus {
 }
 
 .refresh-colors:hover {
-    background-color: #444;
+    background-color: var(--button-bg-hover-color);
 }
 
 .refresh-colors:disabled {
-    background-color: #33444444;
-    color: #d4d4d4;
+    background-color: var(--button-disabled-bg-color);
+    color: var(--button-disabled-color);
 }
 
 /* Add animation for fading in and out the instruction message */
@@ -212,7 +225,7 @@ input:focus {
 
 .error-message {
     font-size: 1.25rem;
-    color: #222;
+    color: var(--primary-color);
 }
 
 /* Update styles for mobile */
@@ -262,16 +275,26 @@ input:focus {
     select:hover,
     select:focus {
         appearance: none;
-        background-color: #44444333;
-        border: solid 1px #444;
         border-radius: 4px;
         font-size: 1rem;
         padding: 10px;
         margin: 0;
         margin-right: 6px;
-        color: #222;
         cursor: pointer;
         width: 200px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    input,
+    input:hover,
+    input:focus {
+        appearance: none;
+        border-radius: 4px;
+        font-size: 1rem;
+        padding: 10px;
+        margin: 0;
+        margin-right: 6px;
+        width: 120px;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     }
 }
@@ -348,15 +371,25 @@ input:focus {
     select:hover,
     select:focus {
         appearance: none;
-        background-color: #44444333;
-        border: solid 1px #444;
         font-size: 0.85rem;
         border-radius: 4px;
         padding: 4px;
         margin: 0;
-        color: #222;
         cursor: pointer;
-        width: 180px;
+        width: 150px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    input,
+    input:hover,
+    input:focus {
+        appearance: none;
+        font-size: 0.85rem;
+        border-radius: 4px;
+        padding: 4px;
+        margin: 0;
+        margin-right: 15px;
+        width: 90px;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     }
 }
@@ -385,7 +418,6 @@ input:focus {
         height: 32px;
         padding: 0;
         border-radius: 6px;
-        color: #eee;
         margin: 8px 10px 8px 3px;
         font-size: 1rem;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -428,15 +460,26 @@ input:focus {
     select:hover,
     select:focus {
         appearance: none;
-        background-color: #44444333;
-        border: solid 1px #444;
         border-radius: 4px;
         font-size: 0.75rem;
         padding: 5px;
         margin: 0;
-        color: #222;
+        margin-right: 5px;
         cursor: pointer;
         width: 100px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    input,
+    input:hover,
+    input:focus {
+        appearance: none;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        padding: 5px;
+        margin: 0;
+        margin-right: 10px;
+        width: 70px;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     }
 

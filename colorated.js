@@ -12,6 +12,7 @@ let previousColors = [];
 const generateRandomColor = () => {
     const randomColor = Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
     const colorName = `#${randomColor}`;
+    console.log(`Randomly generated color: ${colorName}`);
     return { hex: colorName, name: randomColor };
 };
 
@@ -48,6 +49,7 @@ const generateColors = async (numColors, selectedScheme) => {
         const existingNames = new Set(); // Set to store existing color names
         while (colors.length < numColors) {
             const color = generateRandomColor();
+            // Retrieve only unique colors based on their name as the API has colors with the same names
             if (!existingNames.has(color.name)) {
                 existingNames.add(color.name);
                 colors.push(color);
@@ -232,14 +234,41 @@ button.addEventListener('click', async (event) => {
     event.preventDefault();
     window.scrollTo(0, 0); // Make sure to start at the top of the page when in mobile view
     const requestCount = parseInt(localStorage.getItem('requestCount')) || 0;
-    const requestLimit = 15; // Number of requests allowed within the timeFrame
+    const requestLimit = 30; // Number of colors requested allowed within the timeFrame
     const timeFrame = 3 * 60 * 1000; // 5 minutes
     const currentTime = Date.now();
     const lastRequestTime = parseInt(localStorage.getItem('lastRequestTime')) || 0;
+    
     if (currentTime - lastRequestTime < timeFrame && requestCount >= requestLimit) {
         disableButtonTimed(timeFrame); // Pass the timeFrame directly
     } else {
+            // Get the hex color from the input field
+            let hexColor = colorSearch.value.trim();
+    
+            // Check if the input field is empty
+            if (!hexColor) {
+                // Generate a random color if the input field is empty
+                const randomColor = generateRandomColor();
+                hexColor = randomColor.hex;
+
+                // Update the input field with the randomly generated color
+                colorSearch.value = hexColor;
+                console.log(`Randomly generated: ${hexColor}`);
+
+                // Clear the input field before generating another color
+                colorSearch.value = '';
+            } else {
+                // Validate the hex input
+                if (!isValidHexColor(hexColor)) {
+                    console.log(`Invalid hex color: ${hexColor}`);
+                    return;
+            }
+
+            console.log(`User input: ${hexColor}`);
+        }
+
         const selectedScheme = colorSchemeSelect.value;
+        console.log(`Color scheme: ${selectedScheme}`);
         await generateColors(5, selectedScheme);
     }
 });
