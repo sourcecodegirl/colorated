@@ -6,6 +6,9 @@ const colorSearch = document.getElementById('hex-color');
 const errorMessageDiv = document.querySelector('.error-message');
 
 let disabledTimestamp = null;
+let lastSentColor = null;
+let lastGeneratedColors = null;
+let lastSelectedScheme = null;
 
 // Function to generate a random value returning a hex format and name value
 const generateRandomColor = () => {
@@ -17,10 +20,10 @@ const generateRandomColor = () => {
 // Function to generate colors based on scheme selected
 const generateColors = async (numColors, selectedScheme) => {
     if (!checkRequestLimit()) return;
-    incrementRequestCount();
     colorContainer.innerHTML = '';
 
     let colors = [];
+    let hexColor = '';
 
     if (selectedScheme === 'random') {
         const existingNames = new Set();
@@ -33,8 +36,9 @@ const generateColors = async (numColors, selectedScheme) => {
         }
         const colorPromises = colors.map(color => getColorInfo(color.hex, false, selectedScheme));
         colors = await Promise.all(colorPromises);
+        incrementRequestCount();
     } else {
-        let hexColor = colorSearch.value.trim();
+        hexColor = colorSearch.value.trim();
         if (!hexColor) {
             const randomColor = generateRandomColor();
             hexColor = randomColor.hex;
@@ -48,16 +52,26 @@ const generateColors = async (numColors, selectedScheme) => {
                 return;
             }
         }
-        colors = await getColorInfo(hexColor, true, selectedScheme);
-        colors = colors.slice(0, numColors);
+        // Check if the color or scheme are the same as the previous to prevent API requests unnecessarily
+        if (hexColor !== lastSentColor || selectedScheme !== lastSelectedScheme) {
+            colors = await getColorInfo(hexColor, true, selectedScheme);
+            colors = colors.slice(0, numColors);
+            lastSentColor = hexColor;
+            lastGeneratedColors = colors;
+            lastSelectedScheme = selectedScheme;
+            incrementRequestCount();
+        } else {
+            colors = lastGeneratedColors;
+        }
     }
+    
     displayColors(colors);
 };
 
 // Function to validate hex color (required by getColorInfo)
 const isValidHexColor = (color) => /^#[0-9A-F]{6}$/i.test(color);
 
-// API call to send hex color and selected color scheme to API and return values for the color(s)
+// API call to send randomly generated hex color(s) to selected color scheme or random and return values for the color(s)
 const getColorInfo = async (hexColor, fetchColorScheme = false, selectedScheme) => {
     if (!isValidHexColor(hexColor)) {
         const errorMessage = `Invalid hex value: ${hexColor}`;
@@ -66,8 +80,8 @@ const getColorInfo = async (hexColor, fetchColorScheme = false, selectedScheme) 
         return;
     }
 
-    const randomColorsUrl = 'https://www.thecolorapi.com/id';
-    const colorSchemesUrl = 'https://www.thecolorapi.com/scheme';
+    const randomColorsUrl = 'https://www.thecolorapi.com/id'; // Retrieves color info for five randomly generated colors
+    const colorSchemesUrl = 'https://www.thecolorapi.com/scheme'; // Retrieves color info for five colors in the color scheme based on one randomly generated color
     const apiUrl = fetchColorScheme ? colorSchemesUrl : randomColorsUrl;
 
     const params = new URLSearchParams({
@@ -269,6 +283,10 @@ button.addEventListener('click', async (event) => {
     await generateColors(5, selectedScheme);
 });
 
+// EventListener to select all characters in the text input for easier entering of a new value
+colorSearch.addEventListener('click', () => {
+    colorSearch.select();
+});
 
 // Function to disable the button until the countdown is complete (requires startCountdown)
 const disableButtonTimed = async (timeFrame) => {
