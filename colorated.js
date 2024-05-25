@@ -6,7 +6,6 @@ const colorSearch = document.getElementById('hex-color');
 const errorMessageDiv = document.querySelector('.error-message');
 
 let disabledTimestamp = null;
-let previousColors = [];
 
 // Function to generate a random value returning a hex format and name value
 const generateRandomColor = () => {
@@ -62,9 +61,6 @@ const generateColors = async (numColors, selectedScheme) => {
         colors = await getColorInfo(generateRandomColor().hex, true, selectedScheme);
         colors = colors.slice(0, numColors);
     }
-
-    previousColors = colors; // Save generated colors
-    localStorage.setItem('previousColors', JSON.stringify(previousColors));
     
     displayColors(colors);
 };
@@ -72,7 +68,7 @@ const generateColors = async (numColors, selectedScheme) => {
 // Function to validate hex color (required by getColorInfo)
 const isValidHexColor = (color) => /^#[0-9A-F]{6}$/i.test(color);
 
-// API call to send hex color to API and return values for the color
+// API call to send hex color and selected color scheme to API and return values for the color(s)
 const getColorInfo = async (hexColor, fetchColorScheme = false, selectedScheme) => {
     if (!isValidHexColor(hexColor)) {
         const errorMessage = `Invalid hex value: ${hexColor}`;
@@ -188,12 +184,10 @@ const scrollUpDown = (position = 300, delayUp = 500, delayDown = 800) => {
 };
 
 // Function to check colors were saved and countdown active for disabled button (requires disableButtonTimed, displayColors, generateColors)
-const checkPrevColorsAndTime = async () => {
-    const savedColors = localStorage.getItem('previousColors');
+const checkTime = async () => {
     const savedTimestamp = localStorage.getItem('disabledTimestamp');
     
-    if (savedColors && savedTimestamp) {
-        previousColors = JSON.parse(savedColors);
+    if (savedTimestamp) {
         disabledTimestamp = parseInt(savedTimestamp);
 
         const elapsedTime = Math.floor((Date.now() - disabledTimestamp) / 1000);
@@ -201,7 +195,7 @@ const checkPrevColorsAndTime = async () => {
         if (elapsedTime < 30) {
             const remainingSeconds = 30 - elapsedTime;
             await disableButtonTimed(remainingSeconds);
-            displayColors(previousColors);
+            displayColors(colors);
         } else {
             button.disabled = false;
         }
@@ -222,7 +216,7 @@ window.addEventListener('load', async () => {
     colorSchemeSelect.style.display = 'inline-block';
     colorSearch.style.display = 'inline-block';
     scrollUpDown(300, 500, 800);
-    await checkPrevColorsAndTime();
+    await checkTime();
 });
 
 // EventListener to show color container when JavaScript is enabled (This is necessary as the template is not displayed initially to prevent the template and the noscript block from both being displayed when JavaScript is disabled)
