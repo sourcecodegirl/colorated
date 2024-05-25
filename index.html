@@ -22,8 +22,8 @@
                 </div>
             </noscript>
             <nav>
-                <div>
-                    <select id="color-scheme-select">
+                    <input type="text" id="hex-color" name="color" required minlength="3" maxlength="6" size="12" placeholder="#FFFFFF" style="display: none;" />
+                    <select id="color-scheme-select" style="display: none;">
                         <option value="random">Random Colors</option>
                         <option value="monochrome">Monochrome</option>
                         <option value="monochrome-dark">Monochrome Dark</option>
@@ -36,6 +36,7 @@
                     </select>
                     <button class="refresh-colors material-symbols-outlined" id="generate-colors" title="Fetch new colors" style="display: none;">refresh</button> <!-- Initially not displayed to prevent button from also being displayed when JavaScript is disabled -->
                 <noscript> <!-- Display disabled button when JavaScript is disabled -->
+                    <input type="text" id="hex-color" name="color" required minlength="3" maxlength="6" size="12" placeholder="#FFFFFF" disabled/>
                     <select id="color-scheme-select" disabled>
                         <option value="disabled">Disabled</option>
                         <option value="random">Random</option>

@@ -2,6 +2,7 @@
 const button = document.getElementById('generate-colors');
 const colorContainer = document.getElementById('color-container');
 const colorSchemeSelect = document.getElementById('color-scheme-select');
+const colorSearch = document.getElementById('hex-color');
 const errorMessageDiv = document.querySelector('.error-message');
 
 let disabledTimestamp = null;
@@ -214,8 +215,10 @@ const appendErrorMessage = (errorMessage) => {
 
 // EventListener to generate colors on load and enable the button (requires checkPrevColorsAndTime)
 window.addEventListener('load', async () => {
-    // Enables the button (This is necessary as the button is disabled initially to prevent the default active button and the noscript disabled button from both being displayed when JavaScript is disabled)
+    // Enables the button, dropdown, and input field (This is necessary as they are disabled initially to prevent the default and the noscript disabled button, dropdown, and input field from being displayed when JavaScript is disabled)
     button.style.display = 'inline-block';
+    colorSchemeSelect.style.display = 'inline-block';
+    colorSearch.style.display = 'inline-block';
     scrollUpDown(300, 500, 800);
     await checkPrevColorsAndTime();
 });
