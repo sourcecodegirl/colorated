@@ -144,10 +144,10 @@ const displayColors = colors => {
         colorInfoDiv.classList.add('color-info');
         colorInfoDiv.innerHTML = `
         <h3>${name}</h3>
-        <p><span class="bold">HEX:</span> ${hex}</p>
-        <p><span class="bold">RGB:</span> ${rgb}</p>
-        <p><span class="bold">HSL:</span> ${hsl}</p>
-        <p><span class="bold">CMYK:</span> ${cmyk}</p>
+        <div><span class="bold">HEX:</span> ${hex}</div>
+        <div><span class="bold">RGB:</span> ${rgb}</div>
+        <div><span class="bold">HSL:</span> ${hsl}</div>
+        <div><span class="bold">CMYK:</span> ${cmyk}</div>
         `;
 
         const textColor = getTextColor(color.hex);
