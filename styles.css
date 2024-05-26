@@ -36,11 +36,6 @@
     height: 100%;
   }
 
-  img, picture, video, canvas, svg {
-    display: block;
-    max-width: 100%;
-  }
-
   input, button, textarea, select {
     font: inherit;
   }
@@ -409,10 +404,20 @@ input::placeholder {
     header {
         padding: 6px 0 20px 10px;
         flex-direction: column;
+        display: flex;
+        align-items: center;
+        width: 100%;
     }
 
+    nav {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: center;
+}
+
     h1 {
-        font-size: 3rem;
+        font-size: 3.25rem;
         text-transform: uppercase;
         letter-spacing: 2px;
         margin-top: 0;
@@ -471,7 +476,7 @@ input::placeholder {
         margin: 0;
         margin-right: 5px;
         cursor: pointer;
-        width: 180px;
+        width: 200px;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     }
 
@@ -484,7 +489,7 @@ input::placeholder {
         padding: 5px;
         margin: 0;
         margin-right: 10px;
-        width: 90px;
+        width: 100px;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     }
 
@@ -508,10 +513,20 @@ input::placeholder {
     header {
         padding: 6px 0 20px 10px;
         flex-direction: column;
+        display: flex;
+        align-items: center;
+        width: 100%;
+    }
+
+    nav {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        justify-content: center;
     }
 
     h1 {
-        font-size: 3rem;
+        font-size: 3.25rem;
         text-transform: uppercase;
         letter-spacing: 2px;
         margin-top: 0;
@@ -570,7 +585,7 @@ input::placeholder {
         margin: 0;
         margin-right: 5px;
         cursor: pointer;
-        width: 180px;
+        width: 55%;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     }
 
@@ -583,7 +598,7 @@ input::placeholder {
         padding: 5px;
         margin: 0;
         margin-right: 10px;
-        width: 90px;
+        width: 25%;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     }
 
