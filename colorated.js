@@ -345,7 +345,7 @@ const displayCopyButtons = () => {
 
 document.addEventListener('DOMContentLoaded', displayCopyButtons);
 
-// Function to show copy notifications
+// Function to show notifications and errors
 const displayNotification = (message) => {
     const notification = document.getElementById('notification');
     notification.innerText = message;
