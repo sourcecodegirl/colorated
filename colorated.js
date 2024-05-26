@@ -353,5 +353,5 @@ const displayNotification = (message) => {
 
     setTimeout(() => {
         notification.style.display = 'none';
-    }, 2000);
+    }, 4000);
 };
