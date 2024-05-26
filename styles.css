@@ -175,6 +175,17 @@ input::placeholder {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
+.copy-button {
+    margin: 0 10px 0 0;
+    display: flex;
+    justify-content: right;
+    align-items: flex-start;
+    float: right;
+    cursor: pointer;
+    width: 10px;
+    height: 10px;
+}
+
 .bold {
     font-weight: 800;
     text-transform: uppercase;
@@ -363,6 +374,17 @@ input::placeholder {
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     }
 
+    .copy-button {
+        margin: 0 10px 0 0;
+        display: flex;
+        justify-content: right;
+        align-items: flex-start;
+        float: right;
+        cursor: pointer;
+        width: 10px;
+        height: 10px;
+    }
+
     .big {
         font-size: 0.85rem;
     }
@@ -464,6 +486,10 @@ input::placeholder {
         transform: translateY(-50%);
         border-radius: 4px;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    .copy-button {
+        display: none;
     }
 
     select,
@@ -573,6 +599,10 @@ input::placeholder {
         transform: translateY(-50%);
         border-radius: 4px;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    .copy-button {
+        display: none;
     }
 
     select,

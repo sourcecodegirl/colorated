@@ -4,6 +4,8 @@ const colorContainer = document.getElementById('color-container');
 const colorSchemeSelect = document.getElementById('color-scheme-select');
 const colorSearch = document.getElementById('hex-color');
 const errorMessageDiv = document.querySelector('.error-message');
+const copyColor = document.querySelector('.copy-color');
+const copyButtons = document.querySelectorAll('.copy-button');
 
 let disabledTimestamp = null;
 let lastSentColor = null;
@@ -144,10 +146,10 @@ const displayColors = colors => {
         colorInfoDiv.classList.add('color-info');
         colorInfoDiv.innerHTML = `
         <h3>${name}</h3>
-        <div><span class="bold">HEX:</span> ${hex}</div>
-        <div><span class="bold">RGB:</span> ${rgb}</div>
-        <div><span class="bold">HSL:</span> ${hsl}</div>
-        <div><span class="bold">CMYK:</span> ${cmyk}</div>
+        <div><span class="bold">HEX:</span> <span class="copy-color">${hex}</span> <span class="material-symbols-outlined copy-button" title="Copy">content_copy</span></div>
+        <div><span class="bold">RGB:</span> <span class="copy-color">${rgb}</span> <span class="material-symbols-outlined copy-button" title="Copy">content_copy</span></div>
+        <div><span class="bold">HSL:</span> <span class="copy-color">${hsl}</span> <span class="material-symbols-outlined copy-button" title="Copy">content_copy</span></div>
+        <div><span class="bold">CMYK:</span> <span class="copy-color">${cmyk}</span> <span class="material-symbols-outlined copy-button" title="Copy">content_copy</span></div>
         `;
 
         const textColor = getTextColor(color.hex);
@@ -156,6 +158,8 @@ const displayColors = colors => {
         colorSlot.appendChild(colorInfoDiv);
         colorContainer.appendChild(colorSlot);
     });
+
+    displayCopyButtons();
 };
 
 // Function to dynamically change text color based on a dark or light color background (required by displayColors)
@@ -329,3 +333,21 @@ const enableButton = () => {
     button.textContent = 'refresh';
     button.title = 'Push to fetch colors';
 };
+
+// Function to copy a color to the clipboard
+const copyToClipboard = (color) => {
+    navigator.clipboard.writeText(color);
+};
+
+// Function with EventListener for the copy color to clipboard buttons
+const displayCopyButtons = () => {
+    document.querySelectorAll('.copy-button').forEach(copyButton => {
+        copyButton.addEventListener('click', () => {
+            const parentDiv = copyButton.closest('div'); // Find the closest parent div
+            const colorToCopy = parentDiv.querySelector('.copy-color').innerText; // Find the .copy-color within the parent div
+            copyToClipboard(colorToCopy);
+        });
+    });
+};
+
+document.addEventListener('DOMContentLoaded', displayCopyButtons);
