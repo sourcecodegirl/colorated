@@ -4,8 +4,6 @@ const colorContainer = document.getElementById('color-container');
 const colorSchemeSelect = document.getElementById('color-scheme-select');
 const colorSearch = document.getElementById('hex-color');
 const errorMessageDiv = document.querySelector('.error-message');
-const copyColor = document.querySelector('.copy-color');
-const copyButtons = document.querySelectorAll('.copy-button');
 
 let disabledTimestamp = null;
 let lastSentColor = null;
@@ -335,19 +333,40 @@ const enableButton = () => {
 };
 
 // Function to copy a color to the clipboard
-const copyToClipboard = (color) => {
-    navigator.clipboard.writeText(color);
+const copyToClipboard = async (color) => {
+    try {
+        await navigator.clipboard.writeText(color);
+        displayNotification('Color copied to clipboard!');
+    } catch (error) {
+        const errorMessage = `Copy error: ${error}`;
+        console.error(errorMessage);
+        appendErrorMessage(errorMessage);
+        displayNotification('Failed to copy the color to the clipboard.');
+        return;
+    }
 };
 
 // Function with EventListener for the copy color to clipboard buttons
+// https://www.youtube.com/watch?v=yks3_9Fij2s
 const displayCopyButtons = () => {
     document.querySelectorAll('.copy-button').forEach(copyButton => {
         copyButton.addEventListener('click', () => {
-            const parentDiv = copyButton.closest('div'); // Find the closest parent div
-            const colorToCopy = parentDiv.querySelector('.copy-color').innerText; // Find the .copy-color within the parent div
+            const parentDiv = copyButton.closest('div');
+            const colorToCopy = parentDiv.querySelector('.copy-color').innerText;
             copyToClipboard(colorToCopy);
         });
     });
 };
 
 document.addEventListener('DOMContentLoaded', displayCopyButtons);
+
+// Function to show copy notifications
+const displayNotification = (message) => {
+    const notification = document.getElementById('notification');
+    notification.innerText = message;
+    notification.style.display = 'inline-block';
+
+    setTimeout(() => {
+        notification.style.display = 'none';
+    }, 2000);
+};

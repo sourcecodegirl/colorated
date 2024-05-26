@@ -240,6 +240,20 @@ input::placeholder {
     z-index: 2;
 }
 
+.notification {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--bg-color);
+    color: var(--dark-color);
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 200;
+}
+
 /* Styles for smaller devices */
 @media only screen and (min-width: 1201px) and (max-width: 1480px) {
     #color-container {
@@ -281,6 +295,17 @@ input::placeholder {
         top: 80px;
         border-radius: 4px;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    .copy-button {
+        margin: 0 10px 0 0;
+        display: flex;
+        justify-content: right;
+        align-items: flex-start;
+        float: right;
+        cursor: pointer;
+        width: 10px;
+        height: 10px;
     }
 
     select,
