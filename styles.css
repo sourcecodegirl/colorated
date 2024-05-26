@@ -10,7 +10,8 @@
     --dropdown-bg-color: #44444333;
     --dropdown-color: #444;
     --input-bg-color: #44444333;
-    --input-color: #444;
+    --input-color: #808080;
+    --input-light-color: #33444444;
     --light-color: #eee;
     --dark-color: #222;
 }
@@ -132,6 +133,10 @@ input:focus {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
+input::placeholder {
+    color: var(--input-light-color);
+}
+
 .definition {
     font-weight: 500;
     text-transform: lowercase;
@@ -229,7 +234,7 @@ input:focus {
     z-index: 2;
 }
 
-/* Update styles for mobile */
+/* Styles for smaller devices */
 @media only screen and (min-width: 1201px) and (max-width: 1480px) {
     #color-container {
         display: flex;
@@ -248,12 +253,12 @@ input:focus {
 
     .color-slot {
         width: 20%;
-        height: 100vh; /* Extend to full height of viewport */
+        height: 100vh;
         margin: 0;
         box-sizing: border-box;
-        padding: 0; /* Remove padding */
+        padding: 0;
         text-align: left;
-        scroll-snap-align: start; /* Snap each color slot to the start of the viewport */
+        scroll-snap-align: start;
         position: relative;
     }
 
@@ -300,10 +305,9 @@ input:focus {
     }
 }
 
-/* Update styles for mobile */
 @media only screen and (min-width: 931px) and (max-width: 1200px) {
     header {
-        padding: 6px 0 8px 10px; /* Adjust header padding for mobile */
+        padding: 6px 0 8px 10px;
     }
 
     h1 {
@@ -340,12 +344,12 @@ input:focus {
 
     .color-slot {
         width: 20%;
-        height: 100vh; /* Extend to full height of viewport */
+        height: 100vh;
         margin: 0;
         box-sizing: border-box;
-        padding: 0; /* Remove padding */
+        padding: 0;
         text-align: left;
-        scroll-snap-align: start; /* Snap each color slot to the start of the viewport */
+        scroll-snap-align: start;
         position: relative;
     }
 
@@ -395,7 +399,6 @@ input:focus {
     }
 }
 
-/* Update styles for mobile */
 @media only screen and (min-width: 320px) and (max-width: 930px) {
     html,
     body {
@@ -404,19 +407,20 @@ input:focus {
         width: 100%;
     }
     header {
-        padding: 6px 0 8px 10px; /* Adjust header padding for mobile */
+        padding: 6px 0 20px 10px;
+        flex-direction: column;
     }
 
     h1 {
-        font-size: 2rem;
+        font-size: 3rem;
         text-transform: uppercase;
         letter-spacing: 2px;
         margin-top: 0;
     }
 
     .refresh-colors {
-        width: 32px;
-        height: 32px;
+        width: 38px;
+        height: 38px;
         padding: 0;
         border-radius: 6px;
         margin: 8px 10px 8px 3px;
@@ -429,30 +433,30 @@ input:focus {
         flex-direction: column;
         align-items: center;
         justify-content: flex-start;
-        padding-top: 0; /* Adjust as needed for header height */
+        padding-top: 0;
         height: auto;
-        scroll-snap-type: y mandatory; /* Enable vertical scrolling snap */
+        scroll-snap-type: y mandatory; 
         width: 100vw;
     }
 
     .color-slot {
-        width: 100%; /* Extend to full width */
-        height: 100vh; /* Extend to full height of viewport */
-        margin-bottom: 0; /* Remove vertical margin */
+        width: 100%;
+        height: 100vh;
+        margin-bottom: 0;
         box-sizing: border-box;
-        padding: 0; /* Remove padding */
+        padding: 0;
         text-align: left;
-        scroll-snap-align: start; /* Snap each color slot to the start of the viewport */
+        scroll-snap-align: start;
         position: relative;
     }
 
     .color-info {
-        width: 100%; /* Extend to full width */
-        max-width: 75%; /* Limit width for readability */
-        margin: auto; /* Center horizontally */
+        width: 100%;
+        max-width: 75%;
+        margin: auto;
         position: relative;
-        top: 50%; /* Center vertically */
-        transform: translateY(-50%); /* Adjust vertical positioning */
+        top: 50%;
+        transform: translateY(-50%);
         border-radius: 4px;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     }
@@ -462,12 +466,12 @@ input:focus {
     select:focus {
         appearance: none;
         border-radius: 4px;
-        font-size: 0.75rem;
+        font-size: 1rem;
         padding: 5px;
         margin: 0;
         margin-right: 5px;
         cursor: pointer;
-        width: 100px;
+        width: 180px;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     }
 
@@ -476,12 +480,115 @@ input:focus {
     input:focus {
         appearance: none;
         border-radius: 4px;
-        font-size: 0.75rem;
+        font-size: 1rem;
         padding: 5px;
         margin: 0;
         margin-right: 10px;
-        width: 70px;
+        width: 90px;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    input::placeholder {
+        color: var(--input-color);
+    }
+
+    footer {
+        padding: 8px 8px;
+        font-size: 0.65rem;
+    }
+}
+
+@media only screen and (max-width: 319px) {
+    html,
+    body {
+        overflow-y: scroll;
+        height: 100vh;
+        width: 100%;
+    }
+    header {
+        padding: 6px 0 20px 10px;
+        flex-direction: column;
+    }
+
+    h1 {
+        font-size: 3rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-top: 0;
+    }
+
+    .refresh-colors {
+        width: 38px;
+        height: 38px;
+        padding: 0;
+        border-radius: 6px;
+        margin: 8px 10px 8px 3px;
+        font-size: 1rem;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    #color-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        padding-top: 0;
+        height: auto;
+        scroll-snap-type: y mandatory;
+        width: 100vw;
+    }
+
+    .color-slot {
+        width: 100%;
+        height: 100vh;
+        margin-bottom: 0;
+        box-sizing: border-box;
+        padding: 0;
+        text-align: left;
+        scroll-snap-align: start;
+        position: relative;
+    }
+
+    .color-info {
+        width: 100%;
+        max-width: 75%;
+        margin: auto;
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+        border-radius: 4px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    select,
+    select:hover,
+    select:focus {
+        appearance: none;
+        border-radius: 4px;
+        font-size: 1rem;
+        padding: 5px;
+        margin: 0;
+        margin-right: 5px;
+        cursor: pointer;
+        width: 180px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    input,
+    input:hover,
+    input:focus {
+        appearance: none;
+        border-radius: 4px;
+        font-size: 1rem;
+        padding: 5px;
+        margin: 0;
+        margin-right: 10px;
+        width: 90px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    input::placeholder {
+        color: var(--input-color);
     }
 
     footer {
