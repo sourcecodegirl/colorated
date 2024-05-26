@@ -4,7 +4,6 @@
         <title>Colorated</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="styles.css">
-        <script src="colorated.js" defer></script>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,13 +11,14 @@
         <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
         <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
         <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
+        <script src="colorated.js" defer></script>
     </head>
     <body>
         <header>
             <h1>Colorated</h1>
             <noscript> <!-- Message when JavaScript is disabled -->
                 <div class="error-message">
-                    <p>JavaScript is required to be enabled to use this website. <a href="https://www.enable-javascript.com/" target="_blank" title="Enable JavaScript" style="text-decoration: underline;">How to enable JavaScript</a>.</p>
+                    <p>JavaScript is required to use this website. <a href="https://www.enable-javascript.com/" target="_blank" title="Enable JavaScript" style="text-decoration: underline;">How to enable JavaScript</a>.</p>
                 </div>
             </noscript>
             <nav>
@@ -55,8 +55,8 @@
             </nav>
         </header>
         <main>
-            <div id="notification" class="notification" style="display: none;">Notification.</div> <!-- Not displayed to prevent appearing when JavaScript is disabled -->
-            <div id="color-container"> <!-- Template for 5 color slots with placeholder data -->
+            <div id="notification" class="notification" style="display: none;">Notification.</div>
+            <div id="color-container"> <!-- Template for 5 color slots with placeholder data for the initial load -->
                 <div class="color-slot" style="background-color: #c8b5e5;">
                     <div class="color-info">
                         <h3 class="dark">PRELUDE</h3>
@@ -103,7 +103,7 @@
                     </div>
                 </div>
             </div>
-            <noscript> <!-- Placeholder when JavaScript is disabled, display placeholder data -->
+            <noscript> <!-- Placeholder when JavaScript is disabled, display placeholder data for initial load -->
                 <div id="color-container">
                     <div class="color-slot" style="background-color: #c8b5e5;">
                         <div class="color-info">
@@ -154,9 +154,7 @@
             </noscript>
         </main>
         <footer>
-            <div>
-                <div>&copy;2024 &mdash; <a href="https://www.thecolorapi.com/" title="Color API" target="_blank">color source</a></div>
-            </div>
+            <div>&copy;2024 &mdash; <a href="https://www.thecolorapi.com/" title="Color API" target="_blank">color source</a></div>
             <div class="definition">made colorful</div>
         </footer>
     </body>
