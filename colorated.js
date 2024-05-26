@@ -47,8 +47,7 @@ const generateColors = async (numColors, selectedScheme) => {
         } else {
             if (!isValidHexColor(hexColor)) {
                 const errorMessage = `Invalid hex value: ${hexColor}`;
-                console.error(errorMessage);
-                appendErrorMessage(errorMessage);
+                displayNotification(errorMessage);
                 return;
             }
         }
@@ -76,8 +75,7 @@ const isValidHexColor = (color) => /^#[0-9A-F]{6}$/i.test(color);
 const getColorInfo = async (hexColor, fetchColorScheme = false, selectedScheme) => {
     if (!isValidHexColor(hexColor)) {
         const errorMessage = `Invalid hex value: ${hexColor}`;
-        console.error(errorMessage);
-        appendErrorMessage(errorMessage);
+        displayNotification(errorMessage);
         return;
     }
 
@@ -101,8 +99,7 @@ const getColorInfo = async (hexColor, fetchColorScheme = false, selectedScheme) 
         const response = await fetch(url);
         if (!response.ok) {
             const errorMessage = `Network response was bad for color: ${hexColor} - Status: ${response.status}`;
-            console.error(errorMessage);
-            appendErrorMessage(errorMessage);
+            displayNotification(errorMessage);
             return;
         }
         const data = await response.json();
@@ -125,8 +122,7 @@ const getColorInfo = async (hexColor, fetchColorScheme = false, selectedScheme) 
         }
     } catch (error) {
         const errorMessage = `There was an error fetching colors: ${error}`;
-        console.error(errorMessage);
-        appendErrorMessage(errorMessage);
+        displayNotification(errorMessage);
         return;
     }
 };
@@ -237,14 +233,6 @@ const checkTime = async () => {
     }
 };
 
-// Function to display error messages in the error-message div
-const appendErrorMessage = (errorMessage) => {
-    const p = document.createElement('p');
-    p.textContent = errorMessage;
-    errorMessageDiv.appendChild(p);
-    errorMessageDiv.style.display = 'inline-block';
-};
-
 // EventListener to generate colors on load and enable the button (requires checkPrevColorsAndTime)
 window.addEventListener('load', async () => {
     // Enables the button, dropdown, and input field (This is necessary as they are disabled initially to prevent the default and the noscript disabled button, dropdown, and input field from being displayed when JavaScript is disabled)
@@ -277,8 +265,7 @@ button.addEventListener('click', async (event) => {
         } else {
             if (!isValidHexColor(hexColor)) {
                 const errorMessage = `Invalid hex value: ${hexColor}`;
-                console.error(errorMessage);
-                appendErrorMessage(errorMessage);
+                displayNotification(errorMessage);
                 return;
             }
         }
@@ -338,10 +325,8 @@ const copyToClipboard = async (color) => {
         await navigator.clipboard.writeText(color);
         displayNotification('Color copied to clipboard!');
     } catch (error) {
-        const errorMessage = `Copy error: ${error}`;
-        console.error(errorMessage);
-        appendErrorMessage(errorMessage);
-        displayNotification('Failed to copy the color to the clipboard.');
+        const errorMessage = `Failed to copy the color to the clipboard: ${error}`;
+        displayNotification(errorMessage);
         return;
     }
 };
