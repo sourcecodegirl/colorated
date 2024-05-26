@@ -46,7 +46,7 @@ const generateColors = async (numColors, selectedScheme) => {
             colorSearch.value = '';
         } else {
             if (!isValidHexColor(hexColor)) {
-                const errorMessage = `Invalid hex value: ${hexColor}`;
+                const errorMessage = `Invalid hex value: ${hexColor}. # and a 6 character hex code required.`;
                 displayNotification(errorMessage);
                 return;
             }
@@ -74,7 +74,7 @@ const isValidHexColor = (color) => /^#[0-9A-F]{6}$/i.test(color);
 // API call to send randomly generated hex color(s) to selected color scheme or random and return values for the color(s)
 const getColorInfo = async (hexColor, fetchColorScheme = false, selectedScheme) => {
     if (!isValidHexColor(hexColor)) {
-        const errorMessage = `Invalid hex value: ${hexColor}`;
+        const errorMessage = `Invalid hex value: ${hexColor}. # and a 6 character hex code required.`;
         displayNotification(errorMessage);
         return;
     }
@@ -98,7 +98,7 @@ const getColorInfo = async (hexColor, fetchColorScheme = false, selectedScheme) 
     try {
         const response = await fetch(url);
         if (!response.ok) {
-            const errorMessage = `Network response was bad for color: ${hexColor} - Status: ${response.status}`;
+            const errorMessage = `Network response not good for color: ${hexColor} - Status: ${response.status}`;
             displayNotification(errorMessage);
             return;
         }
@@ -264,7 +264,7 @@ button.addEventListener('click', async (event) => {
             hexColor = randomColor.hex;
         } else {
             if (!isValidHexColor(hexColor)) {
-                const errorMessage = `Invalid hex value: ${hexColor}`;
+                const errorMessage = `Invalid hex value: ${hexColor}. # and a 6 character hex code required.`;
                 displayNotification(errorMessage);
                 return;
             }
@@ -323,9 +323,9 @@ const enableButton = () => {
 const copyToClipboard = async (color) => {
     try {
         await navigator.clipboard.writeText(color);
-        displayNotification('Color copied to clipboard!');
+        displayNotification(`${color} copied!`);
     } catch (error) {
-        const errorMessage = `Failed to copy the color to the clipboard: ${error}`;
+        const errorMessage = `Failed to copy the color: ${error}`;
         displayNotification(errorMessage);
         return;
     }
