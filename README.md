@@ -9,13 +9,17 @@
 ### Random
 
 #### Randomly generate 5 hex values and retrieve and display information for those 5 colors on the page
+- If a hex value is entered in the input field, Random will ignore it
+
 #### Randomly generate 1 hex value and retrieve and display 5 colors and information for any of the color schemes
 - This will display the hex value that was randomly generated in the input field that was used to get the colors for the color scheme selected
-- If the value or the color scheme selected doesn't change, there is no request to generate a color scheme until one of those are changed after the initial request
+- If a hex value is entered in the input field, and any of the color schemes are selected, it will send the hex value to the API to retrieve 5 colors for the color scheme selected
 
 ### User Input
 
 #### Retrieve and display 5 colors based on 1 hex value input for any of the color schemes
+- If a hex value is entered in the input field, it will send the hex value to the API to retrieve 5 colors for the color scheme selected
+- If Random is selected, the hex value entered will be ignored
 
 ## Color Schemes
 - Monochrome
@@ -38,4 +42,5 @@ Next to each color value is a copy button to copoy any of the color codes for pa
 - CMYK
 
 ## Warning
-The button to generate colors will disable if 30 requests have been made within 3 minutes
+- The button to generate colors will disable if 30 requests have been made within 3 minutes
+- If the hex value or the color scheme selected isn't changed, there will be no API request to generate a color scheme until one of those are changed after the initial request
