@@ -189,7 +189,7 @@ const scrollUpDown = (position = 300, delayUp = 500, delayDown = 800) => {
 // Function to check requests and limit and disable the button to prevent too many requests to the API
 const checkRequestLimit = () => {
     const requestCount = parseInt(localStorage.getItem('requestCount')) || 0;
-    const requestLimit = 30;
+    const requestLimit = 25; // Number of requests allowed within the timeFrame
     const timeFrame = 3 * 60 * 1000; // 3 minutes
     const currentTime = Date.now();
     const lastRequestTime = parseInt(localStorage.getItem('lastRequestTime')) || 0;
@@ -283,11 +283,13 @@ colorSearch.addEventListener('click', () => {
 const disableButtonTimed = async (timeFrame) => {
     button.disabled = true;
     button.textContent = 'refresh';
-    button.title = `Please wait ${timeFrame / 1000} seconds before fetching new colors`;
-    const errorMessage = `Please wait ${timeFrame / 1000} seconds before fetching new colors`;
+    const timeInSeconds = Math.floor(timeFrame / 1000);
+    const formattedTime = formatTime(timeInSeconds);
+    button.title = `Please wait ${formattedTime} seconds before fetching new colors`;
+    const errorMessage = `Please wait ${formattedTime} seconds before fetching new colors`;
     displayNotification(errorMessage);
 
-    startCountdown(timeFrame / 1000); // Convert timeFrame to seconds
+    startCountdown(timeInSeconds);
 
     disabledTimestamp = Date.now() - (timeFrame / 1000); // Set the disabledTimestamp to the current time
     localStorage.setItem('disabledTimestamp', disabledTimestamp);
@@ -321,6 +323,7 @@ const enableButton = () => {
     button.disabled = false;
     button.textContent = 'refresh';
     button.title = 'Push to fetch colors';
+    hideNotification();
 };
 
 // Function to copy a color to the clipboard
@@ -355,7 +358,15 @@ const displayNotification = (message) => {
     notification.innerText = message;
     notification.style.display = 'inline-block';
 
-    setTimeout(() => {
+    if (!button.disabled) {
+        setTimeout(() => {
         notification.style.display = 'none';
     }, 4000);
+    }
+};
+
+// Function to hide notifications when the button is enabled
+const hideNotification = () => {
+    const notification = document.getElementById('notification');
+    notification.style.display = 'none';
 };
