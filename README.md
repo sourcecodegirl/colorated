@@ -12,7 +12,7 @@
 - If a hex value is entered in the input field, Random will ignore it
 
 #### Randomly generate 1 hex value and retrieve and display 5 colors and information for any of the color schemes
-- This will display the hex value that was randomly generated in the input field that was used to get the colors for the color scheme selected
+- This will display the hex value that was randomly generated in the input field that to retrieve the colors for the color scheme selected and any of the other color schemes
 - If a hex value is entered in the input field, and any of the color schemes are selected, it will send the hex value to the API to retrieve 5 colors for the color scheme selected
 
 ### User Input

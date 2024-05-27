@@ -127,6 +127,30 @@ input:focus {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
+#reset-button {
+    display: inline-block;
+    border: 0;
+    width: 48px;
+    height: 48px;
+    background-color: var(--button-bg-color);
+    border-radius: 6px;
+    color: var(--button-color);
+    margin: 0;
+    font-size: 1.6rem;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    vertical-align: middle;
+    line-height: 48px;
+}
+
+#reset-button:hover {
+    background-color: var(--button-bg-hover-color);
+}
+
+#reset-button:disabled {
+    background-color: var(--button-disabled-bg-color);
+    color: var(--button-disabled-color);
+}
+
 input::placeholder {
     color: var(--input-light-color);
 }

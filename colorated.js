@@ -4,6 +4,7 @@ const colorContainer = document.getElementById('color-container');
 const colorSchemeSelect = document.getElementById('color-scheme-select');
 const colorSearch = document.getElementById('hex-color');
 const errorMessageDiv = document.querySelector('.error-message');
+const resetButton = document.getElementById('reset-button');
 
 let disabledTimestamp = null;
 let lastSentColor = null;
@@ -222,10 +223,11 @@ const checkTime = async () => {
         disabledTimestamp = parseInt(savedTimestamp);
 
         const elapsedTime = Math.floor((Date.now() - disabledTimestamp) / 1000);
+        const timeFrame = 3 * 60 * 1000; // 3 minutes
         
-        if (elapsedTime < 30) {
-            const remainingSeconds = 30 - elapsedTime;
-            await disableButtonTimed(remainingSeconds);
+        if (elapsedTime < timeFrame) {
+            const remainingTime = timeFrame - elapsedTime;
+            await disableButtonTimed(remainingTime);
             displayColors(colors);
         } else {
             button.disabled = false;
@@ -237,10 +239,11 @@ const checkTime = async () => {
 window.addEventListener('load', async () => {
     // Enables the button, dropdown, and input field (This is necessary as they aren't displayed initially to prevent the default and the noscript disabled button, dropdown, and input field from being displayed when JavaScript is disabled)
     button.style.display = 'inline-block';
+    resetButton.style.display = 'inline-block';
     colorSchemeSelect.style.display = 'inline-block';
     colorSearch.style.display = 'inline-block';
     scrollUpDown(300, 500, 800);
-    await checkTime();
+    //await checkTime();
 });
 
 // EventListener to show color container when JavaScript is enabled (This is necessary as the template is not displayed initially to prevent the template and the noscript block from both being displayed when JavaScript is disabled)
@@ -274,6 +277,13 @@ button.addEventListener('click', async (event) => {
     await generateColors(5, selectedScheme);
 });
 
+// EventListener to reset values
+resetButton.addEventListener('click', () => {
+    event.preventDefault();
+    colorSearch.value = '';
+    displayNotification(`Cleared color`);
+})
+
 // EventListener to select all characters in the text input for easier entering of a new value
 colorSearch.addEventListener('click', () => {
     colorSearch.select();
@@ -282,7 +292,7 @@ colorSearch.addEventListener('click', () => {
 // Function to disable the button until the countdown is complete (requires startCountdown)
 const disableButtonTimed = async (timeFrame) => {
     button.disabled = true;
-    button.textContent = 'refresh';
+    button.textContent = 'palette';
     const timeInSeconds = Math.floor(timeFrame / 1000);
     const formattedTime = formatTime(timeInSeconds);
     button.title = `Please wait ${formattedTime} seconds before fetching new colors`;
