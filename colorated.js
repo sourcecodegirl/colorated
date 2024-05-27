@@ -280,9 +280,11 @@ button.addEventListener('click', async (event) => {
 // EventListener to reset values
 resetButton.addEventListener('click', () => {
     event.preventDefault();
-    colorSearch.value = '';
-    displayNotification(`Cleared color`);
-})
+    if (colorSearch.value) {
+        colorSearch.value = '';
+        displayNotification(`Cleared color`);
+    }
+});
 
 // EventListener to select all characters in the text input for easier entering of a new value
 colorSearch.addEventListener('click', () => {
