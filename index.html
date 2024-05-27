@@ -25,9 +25,11 @@
                 </div>
             </noscript>
             <nav>
-                <form>
+                <div class="container-left">
                     <input type="text" id="hex-color" name="color" minlength="3" maxlength="7" size="12" placeholder="#FFFFFF" style="display: none;" />
                     <button class="material-symbols-outlined" id="reset-button" title="Reset values" style="display: none;">refresh</button>
+                </div>
+                <div class="container-right">
                     <select id="color-scheme-select" style="display: none;">
                         <option value="random">Random</option>
                         <option value="monochrome">Monochrome</option>
@@ -39,29 +41,34 @@
                         <option value="triad">Triad</option>
                         <option value="quad">Quad</option>
                     </select>
-                    <button class="refresh-colors material-symbols-outlined" id="generate-colors" title="Fetch new colors" style="display: none;">palette</button> <!-- Initially not displayed to prevent button from also being displayed when JavaScript is disabled -->
+                    <button class="refresh-colors material-symbols-outlined" id="generate-colors" title="Fetch new colors" style="display: none;">palette</button>
+                </div>
+                <!-- Initially not displayed to prevent button from also being displayed when JavaScript is disabled -->
                 <noscript> <!-- Display disabled button when JavaScript is disabled -->
-                    <input type="text" id="hex-color" name="color" required minlength="3" maxlength="6" size="12" placeholder="#FFFFFF" disabled/>
-                    <button class="material-symbols-outlined" id="reset-button" title="Reset values" disabled>refresh</button>
-                    <select id="color-scheme-select" disabled>
-                        <option value="disabled">Disabled</option>
-                        <option value="random">Random</option>
-                        <option value="monochrome">Monochrome</option>
-                        <option value="monochrome-dark">Monochrome Dark</option>
-                        <option value="monochrome-light">Monochrome Light</option>
-                        <option value="analogic">Analogic</option>
-                        <option value="complement">Complement</option>
-                        <option value="analogic-complement">Analogic Complement</option>
-                        <option value="triad">Triad</option>
-                        <option value="quad">Quad</option>
-                    </select>
-                    <button class="refresh-colors material-symbols-outlined" id="generate-colors" title="Fetch new colors" disabled>palette</button>
+                    <div class="container-left">
+                        <input type="text" id="hex-color" name="color" minlength="3" maxlength="7" size="12" placeholder="#FFFFFF" disabled/>
+                        <button class="material-symbols-outlined" id="reset-button" title="Reset values" disabled>refresh</button>
+                    </div>
+                    <div class="container-right">
+                        <select id="color-scheme-select" disabled>
+                            <option value="disabled">Disabled</option>
+                            <option value="random">Random</option>
+                            <option value="monochrome">Monochrome</option>
+                            <option value="monochrome-dark">Monochrome Dark</option>
+                            <option value="monochrome-light">Monochrome Light</option>
+                            <option value="analogic">Analogic</option>
+                            <option value="complement">Complement</option>
+                            <option value="analogic-complement">Analogic Complement</option>
+                            <option value="triad">Triad</option>
+                            <option value="quad">Quad</option>
+                        </select>
+                        <button class="refresh-colors material-symbols-outlined" id="generate-colors" title="Fetch new colors" disabled>palette</button>
+                    </div>
                 </noscript>
-                </form>
             </nav>
         </header>
         <main>
-            <div id="notification" class="notification" style="display: none;">Notification.</div>
+            <div id="notification" class="notification" style="display: none;"><!-- Container for notifications --></div>
             <div id="color-container"> <!-- Template for 5 color slots with placeholder data for the initial load -->
                 <div class="color-slot" style="background-color: #c8b5e5;">
                     <div class="color-info">
