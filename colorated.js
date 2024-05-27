@@ -235,7 +235,7 @@ const checkTime = async () => {
 
 // EventListener to generate colors on load and enable the button (requires checkPrevColorsAndTime)
 window.addEventListener('load', async () => {
-    // Enables the button, dropdown, and input field (This is necessary as they are disabled initially to prevent the default and the noscript disabled button, dropdown, and input field from being displayed when JavaScript is disabled)
+    // Enables the button, dropdown, and input field (This is necessary as they aren't displayed initially to prevent the default and the noscript disabled button, dropdown, and input field from being displayed when JavaScript is disabled)
     button.style.display = 'inline-block';
     colorSchemeSelect.style.display = 'inline-block';
     colorSearch.style.display = 'inline-block';
@@ -283,7 +283,9 @@ colorSearch.addEventListener('click', () => {
 const disableButtonTimed = async (timeFrame) => {
     button.disabled = true;
     button.textContent = 'refresh';
-    button.title = `Respectfully wait ${timeFrame / 1000} seconds before fetching new colors`;
+    button.title = `Please wait ${timeFrame / 1000} seconds before fetching new colors`;
+    const errorMessage = `Please wait ${timeFrame / 1000} seconds before fetching new colors`;
+    displayNotification(errorMessage);
 
     startCountdown(timeFrame / 1000); // Convert timeFrame to seconds
 
@@ -297,7 +299,9 @@ const startCountdown = (secondsLeft) => {
         secondsLeft--;
         if (secondsLeft > 0) {
             const remainingTime = formatTime(secondsLeft);
-            button.title = `Respectfully wait ${remainingTime} before fetching new colors`;
+            button.title = `Please wait ${remainingTime} before fetching new colors`;
+            const errorMessage = `Please wait ${remainingTime} before fetching new colors`;
+            displayNotification(errorMessage);
         } else {
             clearInterval(countdownInterval);
             enableButton();
