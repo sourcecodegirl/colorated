@@ -108,7 +108,6 @@ select:focus {
     margin: 0;
     margin-right: 6px;
     color: var(--primary-color);
-    cursor: pointer;
     width: 200px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
@@ -322,7 +321,6 @@ input::placeholder {
         padding: 10px;
         margin: 0;
         margin-right: 6px;
-        cursor: pointer;
         width: 200px;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     }
@@ -536,7 +534,6 @@ input::placeholder {
         padding: 5px;
         margin: 0;
         margin-right: 5px;
-        cursor: pointer;
         width: 200px;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     }
@@ -649,7 +646,6 @@ input::placeholder {
         padding: 5px;
         margin: 0;
         margin-right: 5px;
-        cursor: pointer;
         width: 55%;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     }
