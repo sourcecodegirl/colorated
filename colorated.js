@@ -3,8 +3,8 @@ const button = document.getElementById('generate-colors');
 const colorContainer = document.getElementById('color-container');
 const colorSchemeSelect = document.getElementById('color-scheme-select');
 const colorSearch = document.getElementById('hex-color');
-const errorMessageDiv = document.querySelector('.error-message');
 const resetButton = document.getElementById('reset-button');
+const notification = document.getElementById('notification');
 
 let disabledTimestamp = null;
 let lastSentColor = null;
@@ -47,8 +47,7 @@ const generateColors = async (numColors, selectedScheme) => {
             colorSearch.value = '';
         } else {
             if (!isValidHexColor(hexColor)) {
-                const errorMessage = `Invalid hex value: ${hexColor}. # and a 6 character hex code required.`;
-                displayNotification(errorMessage);
+                displayNotification(`Invalid hex value: ${hexColor}. # and a 6 character hex code required.`);
                 return;
             }
         }
@@ -75,8 +74,7 @@ const isValidHexColor = (color) => /^#[0-9A-F]{6}$/i.test(color);
 // API call to send randomly generated hex color(s) to selected color scheme or random and return values for the color(s)
 const getColorInfo = async (hexColor, fetchColorScheme = false, selectedScheme) => {
     if (!isValidHexColor(hexColor)) {
-        const errorMessage = `Invalid hex value: ${hexColor}. # and a 6 character hex code required.`;
-        displayNotification(errorMessage);
+        displayNotification(`Invalid hex value: ${hexColor}. # and a 6 character hex code required.`);
         return;
     }
 
@@ -99,8 +97,7 @@ const getColorInfo = async (hexColor, fetchColorScheme = false, selectedScheme) 
     try {
         const response = await fetch(url);
         if (!response.ok) {
-            const errorMessage = `Network response not good for color: ${hexColor} - Status: ${response.status}`;
-            displayNotification(errorMessage);
+            displayNotification(`Network response not good for color: ${hexColor} - Status: ${response.status}`);
             return;
         }
         const data = await response.json();
@@ -122,8 +119,7 @@ const getColorInfo = async (hexColor, fetchColorScheme = false, selectedScheme) 
             };
         }
     } catch (error) {
-        const errorMessage = `There was an error fetching colors: ${error}`;
-        displayNotification(errorMessage);
+        displayNotification(`There was an error fetching colors: ${error}`);
         return;
     }
 };
@@ -187,7 +183,7 @@ const scrollUpDown = (position = 300, delayUp = 500, delayDown = 800) => {
     }, delayUp);
 };
 
-// Function to check requests and limit and disable the button to prevent too many requests to the API
+// Function to check requests and limit and disable the button to prevent too many requests to the API (requires disableButtonTimed)
 const checkRequestLimit = () => {
     const requestCount = parseInt(localStorage.getItem('requestCount')) || 0;
     const requestLimit = 25; // Number of requests allowed within the timeFrame
@@ -215,35 +211,14 @@ const incrementRequestCount = () => {
     localStorage.setItem('requestCount', requestCount + 1);
 };
 
-// Function to check colors were saved and countdown active for disabled button (requires disableButtonTimed, displayColors, generateColors)
-const checkTime = async () => {
-    const savedTimestamp = localStorage.getItem('disabledTimestamp');
-    
-    if (savedTimestamp) {
-        disabledTimestamp = parseInt(savedTimestamp);
-
-        const elapsedTime = Math.floor((Date.now() - disabledTimestamp) / 1000);
-        const timeFrame = 3 * 60 * 1000; // 3 minutes
-        
-        if (elapsedTime < timeFrame) {
-            const remainingTime = timeFrame - elapsedTime;
-            await disableButtonTimed(remainingTime);
-            displayColors(colors);
-        } else {
-            button.disabled = false;
-        }
-    }
-};
-
-// EventListener to generate colors on load and enable the button (requires checkPrevColorsAndTime)
+// EventListener to generate colors on load and enable the button, dropdown, and input fields as they aren't displayed initially
 window.addEventListener('load', async () => {
-    // Enables the button, dropdown, and input field (This is necessary as they aren't displayed initially to prevent the default and the noscript disabled button, dropdown, and input field from being displayed when JavaScript is disabled)
-    button.style.display = 'inline-block';
-    resetButton.style.display = 'inline-block';
-    colorSchemeSelect.style.display = 'inline-block';
-    colorSearch.style.display = 'inline-block';
+    const displayElements = [button, resetButton, colorSchemeSelect, colorSearch];
+    displayElements.forEach(element => {
+        element.style.display = 'inline-block';
+    });
+
     scrollUpDown(300, 500, 800);
-    //await checkTime();
 });
 
 // EventListener to show color container when JavaScript is enabled (This is necessary as the template is not displayed initially to prevent the template and the noscript block from both being displayed when JavaScript is disabled)
@@ -267,8 +242,7 @@ button.addEventListener('click', async (event) => {
             hexColor = randomColor.hex;
         } else {
             if (!isValidHexColor(hexColor)) {
-                const errorMessage = `Invalid hex value: ${hexColor}. # and a 6 character hex code required.`;
-                displayNotification(errorMessage);
+                displayNotification(`Invalid hex value: ${hexColor}. # and a 6 character hex code required.`);
                 return;
             }
         }
@@ -282,7 +256,7 @@ resetButton.addEventListener('click', () => {
     event.preventDefault();
     if (colorSearch.value) {
         colorSearch.value = '';
-        displayNotification(`Cleared color`);
+        displayNotification(`Cleared color.`);
     }
 });
 
@@ -297,13 +271,12 @@ const disableButtonTimed = async (timeFrame) => {
     button.textContent = 'palette';
     const timeInSeconds = Math.floor(timeFrame / 1000);
     const formattedTime = formatTime(timeInSeconds);
-    button.title = `Please wait ${formattedTime} seconds before fetching new colors`;
-    const errorMessage = `Please wait ${formattedTime} seconds before fetching new colors`;
-    displayNotification(errorMessage);
+    button.title = `Please wait ${formattedTime} seconds before fetching new colors.`;
+    displayNotification(`Too many requests in a short amount of time. Please wait ${formattedTime} seconds before fetching new colors.`);
 
     startCountdown(timeInSeconds);
 
-    disabledTimestamp = Date.now() - (timeFrame / 1000); // Set the disabledTimestamp to the current time
+    disabledTimestamp = Date.now() - (timeFrame / 1000);
     localStorage.setItem('disabledTimestamp', disabledTimestamp);
 };
 
@@ -313,9 +286,8 @@ const startCountdown = (secondsLeft) => {
         secondsLeft--;
         if (secondsLeft > 0) {
             const remainingTime = formatTime(secondsLeft);
-            button.title = `Please wait ${remainingTime} before fetching new colors`;
-            const errorMessage = `Please wait ${remainingTime} before fetching new colors`;
-            displayNotification(errorMessage);
+            button.title = `Please wait ${remainingTime} before fetching new colors.`;
+            displayNotification(`Too many requests in a short amount of time. Please wait ${remainingTime} before fetching new colors.`);
         } else {
             clearInterval(countdownInterval);
             enableButton();
@@ -344,8 +316,7 @@ const copyToClipboard = async (color) => {
         await navigator.clipboard.writeText(color);
         displayNotification(`${color} copied!`);
     } catch (error) {
-        const errorMessage = `Failed to copy the color: ${error}`;
-        displayNotification(errorMessage);
+        displayNotification(`Failed to copy the color: ${error}`);
         return;
     }
 };
@@ -366,7 +337,6 @@ document.addEventListener('DOMContentLoaded', displayCopyButtons);
 
 // Function to show notifications and errors
 const displayNotification = (message) => {
-    const notification = document.getElementById('notification');
     notification.innerText = message;
     notification.style.display = 'inline-block';
 
@@ -379,6 +349,5 @@ const displayNotification = (message) => {
 
 // Function to hide notifications when the button is enabled
 const hideNotification = () => {
-    const notification = document.getElementById('notification');
     notification.style.display = 'none';
 };
