@@ -6,10 +6,10 @@ const colorSearch = document.getElementById('hex-color');
 const resetButton = document.getElementById('reset-button');
 const notification = document.getElementById('notification');
 
-let disabledTimestamp = null;
-let lastSentColor = null;
-let lastGeneratedColors = null;
-let lastSelectedScheme = null;
+let disabledTimestamp;
+let lastSentColor;
+let lastGeneratedColors;
+let lastSelectedScheme;
 
 // Function to generate a random value returning a hex format and name value
 const generateRandomColor = () => {
@@ -47,7 +47,7 @@ const generateColors = async (numColors, selectedScheme) => {
             colorSearch.value = '';
         } else {
             if (!isValidHexColor(hexColor)) {
-                displayNotification(`Invalid hex value: ${hexColor}. # and a 6 character hex code required.`);
+                displayNotification(`Invalid hex value: ${hexColor}. # and a 6 character hex code required. Example: #A16E8C.`);
                 return;
             }
         }
@@ -74,7 +74,7 @@ const isValidHexColor = (color) => /^#[0-9A-F]{6}$/i.test(color);
 // API call to send randomly generated hex color(s) to selected color scheme or random and return values for the color(s)
 const getColorInfo = async (hexColor, fetchColorScheme = false, selectedScheme) => {
     if (!isValidHexColor(hexColor)) {
-        displayNotification(`Invalid hex value: ${hexColor}. # and a 6 character hex code required.`);
+        displayNotification(`Invalid hex value: ${hexColor}. # and a 6 character hex code required. Example: #A16E8C.`);
         return;
     }
 
@@ -242,7 +242,7 @@ button.addEventListener('click', async (event) => {
             hexColor = randomColor.hex;
         } else {
             if (!isValidHexColor(hexColor)) {
-                displayNotification(`Invalid hex value: ${hexColor}. # and a 6 character hex code required.`);
+                displayNotification(`Invalid hex value: ${hexColor}. # and a 6 character hex code required. Example: #A16E8C.`);
                 return;
             }
         }
