@@ -82,8 +82,8 @@ const generateUniqueColors = async (numColors, selectedScheme) => {
     return colorResults;
 };
 
-// Function to validate hex color (required by getColorInfo)
-const isValidHexColor = (color) => /^#[0-9A-F]{6}$/i.test(color);
+// Function to validate hex color (required by getColorInfo) (credit: https://stackoverflow.com/questions/8027423/how-to-check-if-a-string-is-a-valid-hex-color-representation)
+const isValidHexColor = (color) => { return /^#[0-9A-F]{6}$/i.test(color) };
 
 // API call to send randomly generated hex color(s) to selected color scheme or random and return values for the color(s)
 const getColorInfo = async (hexColor, fetchColorScheme = false, selectedScheme) => {
