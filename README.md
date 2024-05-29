@@ -9,17 +9,15 @@
 ### Random
 
 #### Randomly generate 5 hex values and retrieve and display information for those 5 colors on the page
-- If a hex value is entered in the input field, Random will ignore it
+- If a hex value is entered in the input field, it will be ignored when Random is selected
 
-#### Randomly generate 1 hex value and retrieve and display 5 colors and information for any of the color schemes
-- This will display the hex value that was randomly generated in the input field that to retrieve the colors for the color scheme selected and any of the other color schemes
-- If a hex value is entered in the input field, and any of the color schemes are selected, it will send the hex value to the API to retrieve 5 colors for the color scheme selected
+#### Randomly generate 1 hex value and retrieve and display 5 colors and information on the page for any of the color schemes
+- This will display the hex value that was randomly generated in the input field and retrieve the colors based on that color for the color scheme selected
 
 ### User Input
 
 #### Retrieve and display 5 colors based on 1 hex value input for any of the color schemes
-- If a hex value is entered in the input field, it will send the hex value to the API to retrieve 5 colors for the color scheme selected
-- If Random is selected, the hex value entered will be ignored
+- If a hex value is entered in the input field, it will send the hex value to the API to retrieve 5 colors for the color scheme selected based on the color entered
 
 ## Color Schemes
 - Monochrome
