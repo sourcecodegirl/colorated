@@ -356,10 +356,3 @@ const displayNotification = (message) => {
 const hideNotification = () => {
     notification.style.display = 'none';
 };
-
-// Function to remove localStorage data when user leaves
-window.addEventListener('beforeunload', () => {
-    localStorage.removeItem('requestCount');
-    localStorage.removeItem('lastRequestTime');
-    localStorage.removeItem('loglevel');
-});
