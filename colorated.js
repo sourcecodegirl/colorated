@@ -26,31 +26,24 @@ const generateColors = async (numColors, selectedScheme) => {
     let colors = [];
     let hexColor = '';
 
+    // If Random is selected, generate unique colors so the same color isn't displayed
     if (selectedScheme === 'random') {
-        const existingNames = new Set();
-        while (colors.length < numColors) {
-            const color = generateRandomColor();
-            if (!existingNames.has(color.name)) {
-                existingNames.add(color.name);
-                colors.push(color);
-            }
-        }
-        const colorPromises = colors.map(color => getColorInfo(color.hex, false, selectedScheme));
-        colors = await Promise.all(colorPromises);
-        incrementRequestCount();
+        colors = await generateUniqueColors(numColors, selectedScheme);
     } else {
+        // Use hex value in input field if one is entered
         hexColor = colorSearch.value.trim();
+
+        // Generate random color if color scheme is selected and no hex value is entered
         if (!hexColor) {
             const randomColor = generateRandomColor();
             hexColor = randomColor.hex;
             colorSearch.value = hexColor;
             colorSearch.value = '';
-        } else {
-            if (!isValidHexColor(hexColor)) {
-                displayNotification(`Invalid hex value: ${hexColor}. # and a 6 character hex code required. Example: #A16E8C.`);
-                return;
-            }
+        } else if (!isValidHexColor(hexColor)) {
+            displayNotification(`Invalid hex value: ${hexColor}. # and a 6 character hex code required. Example: #A16E8C.`);
+            return;
         }
+
         // Check if the color or scheme are the same as the previous to prevent API requests unnecessarily
         if (hexColor !== lastSentColor || selectedScheme !== lastSelectedScheme) {
             colors = await getColorInfo(hexColor, true, selectedScheme);
@@ -63,9 +56,30 @@ const generateColors = async (numColors, selectedScheme) => {
             colors = lastGeneratedColors;
         }
     }
-    
+
     displayColors(colors);
     colorSearch.value = hexColor;
+
+};
+
+// Function to generate colors until all 5 are unique (required by generateColors)
+const generateUniqueColors = async (numColors, selectedScheme) => {
+    const existingNames = new Set();
+    let colors = [];
+
+    while (colors.length < numColors) {
+        const color = generateRandomColor();
+        if (!existingNames.has(color.name)) {
+            existingNames.add(color.name);
+            colors.push(color);
+        }
+    }
+
+    const colorPromises = colors.map(color => getColorInfo(color.hex, false, selectedScheme));
+    colorResults = await Promise.all(colorPromises);
+    incrementRequestCount();
+
+    return colorResults;
 };
 
 // Function to validate hex color (required by getColorInfo)
@@ -78,49 +92,40 @@ const getColorInfo = async (hexColor, fetchColorScheme = false, selectedScheme) 
         return;
     }
 
-    const randomColorsUrl = 'https://www.thecolorapi.com/id'; // Retrieves color info for five randomly generated colors
-    const colorSchemesUrl = 'https://www.thecolorapi.com/scheme'; // Retrieves color info for five colors in the color scheme based on one randomly generated color
-    const apiUrl = fetchColorScheme ? colorSchemesUrl : randomColorsUrl;
+    const apiUrl = fetchColorScheme ? 'https://www.thecolorapi.com/scheme' : 'https://www.thecolorapi.com/id';
 
     const params = new URLSearchParams({
         hex: hexColor,
-        format: 'json'
+        format: 'json',
+        ...(fetchColorScheme && { mode: selectedScheme, count: '5' })
     });
 
-    if (fetchColorScheme) {
-        params.set('mode', selectedScheme);
-        params.set('count', '5');
-    }
-
-    const url = `${apiUrl}?${params}`;
-
     try {
-        const response = await fetch(url);
+        const response = await fetch(`${apiUrl}?${params}`);
         if (!response.ok) {
-            displayNotification(`Network response not good for color: ${hexColor} - Status: ${response.status}`);
+            displayNotification(`Network response not good for color: ${hexColor}. Status: ${response.status}`);
             return;
         }
+
         const data = await response.json();
-        if (fetchColorScheme) {
-            return data.colors.map(color => ({
-                hex: color.hex.value,
-                name: color.name.value,
-                rgb: color.rgb.value,
-                hsl: color.hsl.value,
-                cmyk: color.cmyk.value
-            }));
-        } else {
-            return {
-                hex: hexColor,
-                name: data.name.value,
-                rgb: data.rgb.value,
-                hsl: data.hsl.value,
-                cmyk: data.cmyk.value
-            };
-        }
+
+        return fetchColorScheme
+        ? data.colors.map(color => ({
+            hex: color.hex.value,
+            name: color.name.value,
+            rgb: color.rgb.value,
+            hsl: color.hsl.value,
+            cmyk: color.cmyk.value
+        }))
+        : {
+            hex: hexColor,
+            name: data.name.value,
+            rgb: data.rgb.value,
+            hsl: data.hsl.value,
+            cmyk: data.cmyk.value
+        };
     } catch (error) {
         displayNotification(`There was an error fetching colors: ${error}`);
-        return;
     }
 };
 
@@ -153,8 +158,7 @@ const displayColors = colors => {
     displayCopyButtons();
 };
 
-// Function to dynamically change text color based on a dark or light color background (required by displayColors)
-// https://gomakethings.com/dynamically-changing-the-text-color-based-on-background-color-contrast-with-vanilla-js/
+// Function to dynamically change text color based on a dark or light color background (required by displayColors) (credit: https://gomakethings.com/dynamically-changing-the-text-color-based-on-background-color-contrast-with-vanilla-js/)
 const getTextColor = (hexColor) => {
     const r = parseInt(hexColor.substring(1, 3), 16);
     const g = parseInt(hexColor.substring(3, 5), 16);
@@ -163,8 +167,7 @@ const getTextColor = (hexColor) => {
     return brightness > 125 ? '#222' : '#eee';
 };
 
-// Function to animate the scrolling up and down of the page in mobile view for user experience with defaults set (required by button click EventListener and on load EventListener)
-// https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollTo
+// Function to animate the scrolling up and down of the page in mobile view for user experience with defaults set (required by on load EventListener) (credit: https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollTo)
 const scrollUpDown = (position = 300, delayUp = 500, delayDown = 800) => {
     window.scrollTo(0, 0);
 
@@ -323,8 +326,7 @@ const copyToClipboard = async (color) => {
     }
 };
 
-// Function with EventListener for the copy color to clipboard buttons
-// https://www.youtube.com/watch?v=yks3_9Fij2s
+// Function with EventListener for the copy color to clipboard buttons (credit: https://www.youtube.com/watch?v=yks3_9Fij2s)
 const displayCopyButtons = () => {
     document.querySelectorAll('.copy-button').forEach(copyButton => {
         copyButton.addEventListener('click', () => {
@@ -335,6 +337,7 @@ const displayCopyButtons = () => {
     });
 };
 
+// Load copy buttons
 document.addEventListener('DOMContentLoaded', displayCopyButtons);
 
 // Function to show notifications and errors
@@ -353,3 +356,10 @@ const displayNotification = (message) => {
 const hideNotification = () => {
     notification.style.display = 'none';
 };
+
+// Function to remove localStorage data when user leaves
+window.addEventListener('beforeunload', () => {
+    localStorage.removeItem('requestCount');
+    localStorage.removeItem('lastRequestTime');
+    localStorage.removeItem('loglevel');
+});
