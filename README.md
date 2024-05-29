@@ -33,7 +33,7 @@
 
 ## Color Information Retrieved
 
-Next to each color value is a copy button to copoy any of the color codes for pasting elsewhere
+Next to each color value is a copy button to copy any of the color codes for pasting elsewhere
 
 - Name
 - HEX
