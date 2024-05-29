@@ -189,7 +189,7 @@ const scrollUpDown = (position = 300, delayUp = 500, delayDown = 800) => {
 // Function to check requests and limit and disable the button to prevent too many requests to the API (requires disableButtonTimed)
 const checkRequestLimit = () => {
     const requestCount = parseInt(localStorage.getItem('requestCount')) || 0;
-    const requestLimit = 25; // Number of requests allowed within the timeFrame
+    const requestLimit = 30; // Number of requests allowed within the timeFrame
     const timeFrame = 3 * 60 * 1000; // 3 minutes
     const currentTime = Date.now();
     const lastRequestTime = parseInt(localStorage.getItem('lastRequestTime')) || 0;
