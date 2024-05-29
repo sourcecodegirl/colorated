@@ -212,7 +212,7 @@ const incrementRequestCount = () => {
 };
 
 // EventListener to generate colors on load and enable the button, dropdown, and input fields as they aren't displayed initially
-window.addEventListener('load', async () => {
+window.addEventListener('load', () => {
     const displayElements = [button, resetButton, colorSchemeSelect, colorSearch];
     displayElements.forEach(element => {
         element.style.display = 'inline-block';
@@ -257,6 +257,8 @@ resetButton.addEventListener('click', () => {
     if (colorSearch.value) {
         colorSearch.value = '';
         displayNotification(`Cleared color.`);
+    } else {
+        displayNotification(`No color found to clear.`)
     }
 });
 
@@ -266,7 +268,7 @@ colorSearch.addEventListener('click', () => {
 });
 
 // Function to disable the button until the countdown is complete (requires startCountdown)
-const disableButtonTimed = async (timeFrame) => {
+const disableButtonTimed = (timeFrame) => {
     button.disabled = true;
     button.textContent = 'palette';
     const timeInSeconds = Math.floor(timeFrame / 1000);
