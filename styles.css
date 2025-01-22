@@ -564,6 +564,7 @@ input::placeholder {
     #reset-button {
         width: 38px;
         height: 38px;
+        padding: 0;
         border-radius: 6px;
         margin: 8px 20px 8px 0;
         font-size: 1.6rem;
@@ -617,7 +618,7 @@ input::placeholder {
         padding: 5px;
         margin: 0;
         margin-right: 5px;
-        width: 170px;
+        width: 120px;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     }
 
